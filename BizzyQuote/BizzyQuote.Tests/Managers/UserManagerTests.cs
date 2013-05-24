@@ -2,18 +2,22 @@
 using System.Text;
 using System.Collections.Generic;
 using BizzyQuote.Data.Entities;
+using BizzyQuote.Data.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizzyQuote.Tests.Managers
 {
     /// <summary>
-    /// Summary description for QuoteManagerTests
+    /// Summary description for UserManagerTests
     /// </summary>
     [TestClass]
-    public class QuoteManagerTests
+    public class UserManagerTests
     {
-        public QuoteManagerTests()
+        public UserManagerTests()
         {
+            //
+            // TODO: Add constructor logic here
+            //
         }
 
         private TestContext testContextInstance;
@@ -57,11 +61,22 @@ namespace BizzyQuote.Tests.Managers
         #endregion
 
         [TestMethod]
-        public void CreateQuoteTest()
+        public void CreateUserTest()
         {
-            Quote quote = new Quote();
-            quote.Address = "460 South Marion pkwy apt 1402";
-            quote.Amount = 47M;
+            User user = new User();
+            user.CompanyID = 1;
+            user.CreatedOn = DateTime.Now;
+            user.Email = "john2@bizzyquote.com";
+            user.FirstName = "John2";
+            user.LastName = "Ocker2s";
+            user.Username = "johnockers2";
+
+            using (var um = new UserManager())
+            {
+                user = um.Create(user, "Password1");
+            }
+
+            Assert.IsTrue(user.ID > 0);
         }
     }
 }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 using BizzyQuote.Data.Entities;
 
 namespace BizzyQuote.Data.Managers
 {
-    public class QuoteManager : IDisposable
+    public class UserManager : IDisposable
     {
         #region Variables
         BizzyQuoteDataContext db;
@@ -15,9 +16,9 @@ namespace BizzyQuote.Data.Managers
 
         #region Constructor & Dispose
         /// <summary>
-        /// Quote Manager 
+        /// User Manager 
         /// </summary>
-        public QuoteManager()
+        public UserManager()
         {
             db = new BizzyQuoteDataContext(Properties.Settings.Default.BizzyQuoteConnectionString);
         }
@@ -32,16 +33,22 @@ namespace BizzyQuote.Data.Managers
         #endregion
 
         #region Methods
-        public Quote Create(Quote quote)
+        public User Create(User user, string password)
         {
-            quote.CreatedOn = DateTime.Now;
-            quote.ModifiedOn = DateTime.Now;
+            var results = Membership.GetAllUsers();
 
-            db.Quotes.InsertOnSubmit(quote);
+
+            MembershipUser membershipUser = Membership.CreateUser(user.Username, password, user.Email);
+            
+            user.CreatedOn = DateTime.Now;
+            user.ModifiedOn = DateTime.Now;
+
+            db.Users.InsertOnSubmit(user);
             db.SubmitChanges();
 
-            return quote;
+            return user;
         }
         #endregion
+        
     }
 }

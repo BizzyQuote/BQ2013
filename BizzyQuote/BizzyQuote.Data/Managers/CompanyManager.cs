@@ -15,7 +15,7 @@ namespace BizzyQuote.Data.Managers
 
         #region Constructor & Dispose
         /// <summary>
-        /// QuoteManager 
+        /// Company Manager 
         /// </summary>
         public CompanyManager()
         {

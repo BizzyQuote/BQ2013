@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="Managers\CompanyManagerTests.cs" />
     <Compile Include="Managers\QuoteManagerTests.cs" />
+    <Compile Include="Managers\UserManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
