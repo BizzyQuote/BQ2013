@@ -1,0 +1,29 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Enums
+@{
+    ViewBag.Title = "Product Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    Product product = ViewBag.Product;
+    
+    <fieldset>
+        <legend>Product Details</legend>
+        <ol>
+            <li class="display-label">Product Name</li>
+            <li class="display-field">@Html.TextBox("Name", product.Name)</li>
+            <li class="display-label">Measurement</li>
+            <li class="display-field">@Html.DropDownList("Measurement", Enum.GetValues(typeof(Measurement)).Cast<Measurement>().Select(x => new SelectListItem { Selected = (x == product.Measurement), Text = x.ToString(), Value = x.ToString() }))</li>
+            <li class="display-label">Active</li>
+            <li class="display-field">@Html.CheckBox("IsActive", product.IsActive)</li>
+            @Html.Hidden("CreatedOn", product.CreatedOn)
+            @Html.Hidden("ModifiedOn", product.ModifiedOn)
+        </ol>
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+

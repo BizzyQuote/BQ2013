@@ -1,0 +1,38 @@
+﻿@if (Request.IsAuthenticated) {
+    if (User.IsInRole("Administrator"))
+    {
+         <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Quotes", "List", "Quotes")</li>
+            <li>@Html.ActionLink("Companies", "List", "Company")</li>
+            <li>@Html.ActionLink("Materials", "AllMaterials", "Materials")</li>
+             <li>@Html.ActionLink("Products", "AllProducts", "Materials")</li>
+             <li>@Html.ActionLink("Suppliers", "List", "Supplier")</li>
+             <li>@Html.ActionLink("Users", "ListAll", "Users")</li>
+             <li>@Html.ActionLink("FAQ", "List", "FAQ")</li>
+        </ul>
+    }
+    else if (User.IsInRole("Manager"))
+    {
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Quotes", "List", "Quotes")</li>
+            <li>@Html.ActionLink("Materials", "Materials", "Materials")</li>
+             <li>@Html.ActionLink("Users", "List", "Users")</li>
+             <li>@Html.ActionLink("FAQ", "List", "FAQ")</li>
+        </ul>
+    }
+    else
+    {
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Quotes", "List", "Quotes")</li>
+        </ul>
+    }
+} else {
+    <ul id="menu">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+}

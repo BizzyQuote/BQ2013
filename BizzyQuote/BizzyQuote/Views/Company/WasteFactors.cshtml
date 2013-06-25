@@ -1,0 +1,23 @@
+﻿@using BizzyQuote.Data.Entities
+@model List<BizzyQuote.Models.WasteFactorModel>
+@{
+    ViewBag.Title = "Waste Factors";
+}
+
+<h2>Waste Factors</h2>
+
+@using (Html.BeginForm())
+{
+    <table class="bizzy-table">
+        <thead>
+            <tr>
+                <th>Part Of the House</th>
+                <th>Product</th>
+                <th>Waste Factor</th>
+            </tr>
+        </thead>
+        @Html.EditorFor(model => model)
+        
+    </table>
+    <input type="submit" value="Save" />
+}

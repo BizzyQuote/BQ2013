@@ -73,7 +73,7 @@ namespace BizzyQuote.Tests.Managers
 
             using (var um = new UserManager())
             {
-                user = um.Create(user, "Password1");
+                user = um.Create(user);
             }
 
             Assert.IsTrue(user.ID > 0);

@@ -11,7 +11,7 @@ namespace BizzyQuote.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("DefaultConnection")
+            : base("BizzyQuote.Data.Properties.Settings.BizzyQuoteConnectionString")
         {
         }
 

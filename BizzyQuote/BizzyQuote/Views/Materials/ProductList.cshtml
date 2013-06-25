@@ -1,0 +1,32 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Enums
+@{
+    ViewBag.Title = "Product List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("New Product", "CreateProduct")
+
+
+<table class="bizzy-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Measurement</th>
+            <th>Active</th>
+            <th>Created</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    @foreach (Product product in ViewBag.Products)
+    {
+        <tr>
+            <td>@Html.ActionLink(product.Name, "EditProduct", new {id = product.ID})</td>
+            <td>@product.Measurement.ToString()</td>
+            <td>@product.IsActive.ToString()</td>
+            <td>@product.CreatedOn.GetValueOrDefault().ToShortDateString()</td>
+            <td> @product.ModifiedOn.GetValueOrDefault().ToShortDateString()</td>
+        </tr>
+    }
+</table>

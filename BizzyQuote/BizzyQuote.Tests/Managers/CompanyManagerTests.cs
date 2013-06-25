@@ -64,8 +64,8 @@ namespace BizzyQuote.Tests.Managers
                 {
                     Address = "460 South Marion pkwy apt 1402",
                     City = "Denver",
-                    Email = "John.Ockers@gmail.com",
-                    Name = "Bizzy Quote",
+                    Email = "some.dude3@gmail.com",
+                    Name = "Third Company",
                     Phone = "815-919-5371",
                     State = "CO",
                     Zip = "80209"
@@ -76,6 +76,31 @@ namespace BizzyQuote.Tests.Managers
             }
 
             Assert.IsTrue(company.ID > 0);
+        }
+
+        [TestMethod]
+        public void EditCompanyTest()
+        {
+            Company company;
+
+            using (var cm = new CompanyManager())
+            {
+                company = cm.Single(1);
+            }
+
+            var oldTime = company.ModifiedOn;
+            company.ModifiedOn = DateTime.Now;
+
+            using (var cm = new CompanyManager())
+            {
+                company = cm.Edit(company);
+            }
+
+            using(var cm = new CompanyManager())
+            {
+                var company2 = cm.Single(1);
+                Assert.IsTrue(company2.ModifiedOn > oldTime);
+            }
         }
     }
 }

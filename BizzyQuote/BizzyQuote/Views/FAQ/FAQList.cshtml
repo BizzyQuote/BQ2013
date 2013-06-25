@@ -1,0 +1,26 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "FAQ List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("New FAQ", "Create")
+
+<table class="bizzy-table">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Answer</th>
+        </tr>
+    </thead>
+    @foreach (FAQ faq in ViewBag.FAQs)
+    {
+        <tr>
+            <td>@Html.ActionLink(faq.Question, "Edit", new { id = faq.ID })</td>
+            <td>@faq.Answer</td>
+        </tr>
+    }
+</table>
+
+

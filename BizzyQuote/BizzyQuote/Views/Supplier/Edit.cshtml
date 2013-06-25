@@ -1,0 +1,26 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "Supplier Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    Supplier supplier = ViewBag.Supplier;
+    
+    <fieldset>
+        <legend>Supplier Details</legend>
+        <ol>
+            <li class="display-label">Supplier Name</li>
+            <li class="display-field">@Html.TextBox("Name", supplier.Name)</li>
+            <li class="display-label">Active</li>
+            <li class="display-field">@Html.CheckBox("IsActive", supplier.IsActive)</li>
+            @Html.Hidden("CreatedOn", supplier.CreatedOn)
+            @Html.Hidden("ModifiedOn", supplier.ModifiedOn)
+        </ol>
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+

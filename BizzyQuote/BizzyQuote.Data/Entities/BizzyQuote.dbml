@@ -1,18 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BizzyQuote" Class="BizzyQuoteDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=BizzyQuote;Integrated Security=True" SettingsObjectName="BizzyQuote.Data.Properties.Settings" SettingsPropertyName="BizzyQuoteConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.[User]" Member="Users">
-    <Type Name="User">
+  <Table Name="dbo.Bills" Member="Bills">
+    <Type Name="Bill">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="FirstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="LastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="CompanyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Company_Bill" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WasteFactor" Member="WasteFactors">
+    <Type Name="WasteFactor">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PartOfHouseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WasteFactor" Member="WasteFactor1" Type="System.Decimal" DbType="Decimal(7,4)" CanBeNull="true" />
       <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastLoggedIn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="User_Quote" Member="Quotes" ThisKey="ID" OtherKey="EmployeeID" Type="Quote" />
-      <Association Name="Company_User" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+      <Column Name="ModifiedBy" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="Company_WasteFactor" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+      <Association Name="PartOfHouse_WasteFactor" Member="PartOfHouse" ThisKey="PartOfHouseID" OtherKey="ID" Type="PartOfHouse" IsForeignKey="true" />
+      <Association Name="Product_WasteFactor" Member="Product" ThisKey="ProductID" OtherKey="ID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Company" Member="Companies">
+    <Type Name="Company">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Zip" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Company_Bill" Member="Bills" ThisKey="ID" OtherKey="CompanyID" Type="Bill" />
+      <Association Name="Company_WasteFactor" Member="WasteFactors" ThisKey="ID" OtherKey="CompanyID" Type="WasteFactor" />
+      <Association Name="Company_CompanyToSupplier" Member="CompanyToSuppliers" ThisKey="ID" OtherKey="CompanyID" Type="CompanyToSupplier" />
+      <Association Name="Company_Pricing" Member="Pricings" ThisKey="ID" OtherKey="CompanyID" Type="Pricing" />
+      <Association Name="Company_Quote" Member="Quotes" ThisKey="ID" OtherKey="CompanyID" Type="Quote" />
+      <Association Name="Company_User" Member="Users" ThisKey="ID" OtherKey="CompanyID" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompanyToSupplier" Member="CompanyToSuppliers">
+    <Type Name="CompanyToSupplier">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UseSupplierPricing" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Company_CompanyToSupplier" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+      <Association Name="Supplier_CompanyToSupplier" Member="Supplier" ThisKey="SupplierID" OtherKey="ID" Type="Supplier" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FAQ" Member="FAQs">
+    <Type Name="FAQ">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Question" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Answer" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Category" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Images" Member="Images">
@@ -22,6 +73,7 @@
       <Column Name="ImageURL" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Notes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Quote_Image" Member="Quote" ThisKey="QuoteID" OtherKey="ID" Type="Quote" IsForeignKey="true" />
     </Type>
   </Table>
@@ -30,36 +82,84 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="SubName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Measurement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Material_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="MaterialID" Type="QuoteItem" />
-    </Type>
-  </Table>
-  <Table Name="dbo.MaterialProduct" Member="MaterialProducts">
-    <Type Name="MaterialProduct">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Measurement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="MaterialProduct_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="MaterialProductID" Type="QuoteItem" />
-    </Type>
-  </Table>
-  <Table Name="dbo.QuoteItem" Member="QuoteItems">
-    <Type Name="QuoteItem">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="QuoteID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="MaterialProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Measurement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="MaterialID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Measurement" Type="global::BizzyQuote.Data.Enums.Measurement" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UnitSize" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UnitCost" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Height" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
       <Column Name="Width" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
-      <Column Name="LinealFt" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
-      <Column Name="SquareFt" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
-      <Column Name="Dollars" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
-      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
-      <Association Name="Material_QuoteItem" Member="Material" ThisKey="MaterialID" OtherKey="ID" Type="Material" IsForeignKey="true" />
-      <Association Name="MaterialProduct_QuoteItem" Member="MaterialProduct" ThisKey="MaterialProductID" OtherKey="ID" Type="MaterialProduct" IsForeignKey="true" />
-      <Association Name="Quote_QuoteItem" Member="Quote" ThisKey="QuoteID" OtherKey="ID" Type="Quote" IsForeignKey="true" />
+      <Column Name="Thickness" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Texture" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Finish" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Overlap" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="SKU" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Material_MaterialToProduct" Member="MaterialToProducts" ThisKey="ID" OtherKey="MaterialID" Type="MaterialToProduct" />
+      <Association Name="Material_Pricing" Member="Pricings" ThisKey="ID" OtherKey="MaterialID" Type="Pricing" />
+      <Association Name="Material_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="MaterialID" Type="QuoteItem" />
+      <Association Name="Supplier_Material" Member="Supplier" ThisKey="SupplierID" OtherKey="ID" Type="Supplier" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MaterialToProduct" Member="MaterialToProducts">
+    <Type Name="MaterialToProduct">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaterialID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Material_MaterialToProduct" Member="Material" ThisKey="MaterialID" OtherKey="ID" Type="Material" IsForeignKey="true" />
+      <Association Name="Product_MaterialToProduct" Member="Product" ThisKey="ProductID" OtherKey="ID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PartOfHouse" Member="PartOfHouses">
+    <Type Name="PartOfHouse">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="PartOfHouse_WasteFactor" Member="WasteFactors" ThisKey="ID" OtherKey="PartOfHouseID" Type="WasteFactor" />
+      <Association Name="PartOfHouse_ProductToPartOfHouse" Member="ProductToPartOfHouses" ThisKey="ID" OtherKey="PartOfHouseID" Type="ProductToPartOfHouse" />
+      <Association Name="PartOfHouse_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="PartOfHouseID" Type="QuoteItem" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pricing" Member="Pricings">
+    <Type Name="Pricing">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaterialID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ModifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Company_Pricing" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+      <Association Name="Material_Pricing" Member="Material" ThisKey="MaterialID" OtherKey="ID" Type="Material" IsForeignKey="true" />
+      <Association Name="Supplier_Pricing" Member="Supplier" ThisKey="SupplierID" OtherKey="ID" Type="Supplier" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Product" Member="Products">
+    <Type Name="Product">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Measurement" Type="global::BizzyQuote.Data.Enums.Measurement" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_WasteFactor" Member="WasteFactors" ThisKey="ID" OtherKey="ProductID" Type="WasteFactor" />
+      <Association Name="Product_MaterialToProduct" Member="MaterialToProducts" ThisKey="ID" OtherKey="ProductID" Type="MaterialToProduct" />
+      <Association Name="Product_ProductToPartOfHouse" Member="ProductToPartOfHouses" ThisKey="ID" OtherKey="ProductID" Type="ProductToPartOfHouse" />
+      <Association Name="Product_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="ProductID" Type="QuoteItem" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductToPartOfHouse" Member="ProductToPartOfHouses">
+    <Type Name="ProductToPartOfHouse">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PartOfHouseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="bit" CanBeNull="false" />
+      <Association Name="PartOfHouse_ProductToPartOfHouse" Member="PartOfHouse" ThisKey="PartOfHouseID" OtherKey="ID" Type="PartOfHouse" IsForeignKey="true" />
+      <Association Name="Product_ProductToPartOfHouse" Member="Product" ThisKey="ProductID" OtherKey="ID" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Quote" Member="Quotes">
@@ -75,26 +175,60 @@
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Amount" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
       <Column Name="Notes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Quote_Image" Member="Images" ThisKey="ID" OtherKey="QuoteID" Type="Image" />
       <Association Name="Quote_QuoteItem" Member="QuoteItems" ThisKey="ID" OtherKey="QuoteID" Type="QuoteItem" />
-      <Association Name="User_Quote" Member="User" ThisKey="EmployeeID" OtherKey="ID" Type="User" IsForeignKey="true" />
       <Association Name="Company_Quote" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+      <Association Name="User_Quote" Member="User" ThisKey="EmployeeID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Company" Member="Companies">
-    <Type Name="Company">
+  <Table Name="dbo.QuoteItem" Member="QuoteItems">
+    <Type Name="QuoteItem">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
-      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="State" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="Zip" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="QuoteID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Measurement" Type="global::BizzyQuote.Data.Enums.Measurement" DbType="Int" CanBeNull="true" />
+      <Column Name="MaterialID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PartOfHouseID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Height" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="Width" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="LinearFt" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="SquareFt" Type="System.Decimal" DbType="Decimal(7,2)" CanBeNull="true" />
+      <Column Name="Dollars" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
+      <Association Name="Material_QuoteItem" Member="Material" ThisKey="MaterialID" OtherKey="ID" Type="Material" IsForeignKey="true" />
+      <Association Name="Product_QuoteItem" Member="Product" ThisKey="ProductID" OtherKey="ID" Type="Product" IsForeignKey="true" />
+      <Association Name="PartOfHouse_QuoteItem" Member="PartOfHouse" ThisKey="PartOfHouseID" OtherKey="ID" Type="PartOfHouse" IsForeignKey="true" />
+      <Association Name="Quote_QuoteItem" Member="Quote" ThisKey="QuoteID" OtherKey="ID" Type="Quote" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Supplier" Member="Suppliers">
+    <Type Name="Supplier">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Company_User" Member="Users" ThisKey="ID" OtherKey="CompanyID" Type="User" />
-      <Association Name="Company_Quote" Member="Quotes" ThisKey="ID" OtherKey="CompanyID" Type="Quote" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Supplier_CompanyToSupplier" Member="CompanyToSuppliers" ThisKey="ID" OtherKey="SupplierID" Type="CompanyToSupplier" />
+      <Association Name="Supplier_Material" Member="Materials" ThisKey="ID" OtherKey="SupplierID" Type="Material" />
+      <Association Name="Supplier_Pricing" Member="Pricings" ThisKey="ID" OtherKey="SupplierID" Type="Pricing" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastLoggedIn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_Quote" Member="Quotes" ThisKey="ID" OtherKey="EmployeeID" Type="Quote" />
+      <Association Name="Company_User" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

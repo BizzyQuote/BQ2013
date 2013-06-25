@@ -1,0 +1,40 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Enums
+@{
+    ViewBag.Title = "Material List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("New Material", "CreateMaterial")
+
+
+<table class="bizzy-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Subname</th>
+            <th>Unit Size</th>
+            <th>Unit Cost</th>
+            <th>Measurement</th>
+            <th>Active</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Products</th>
+        </tr>
+    </thead>
+    @foreach (Material material in ViewBag.Materials)
+    {
+        <tr>
+            <td>@Html.ActionLink(material.Name, "EditMaterial", new {id = material.ID})</td>
+            <td>@material.SubName</td>
+            <td>@material.UnitSize</td>
+            <td>@material.UnitCost</td>
+            <td>@material.Measurement.ToString()</td>
+            <td>@material.IsActive.ToString()</td>
+            <td>@material.CreatedOn.ToShortDateString()</td>
+            <td> @material.ModifiedOn.ToShortDateString()</td>
+            <td>@Html.ActionLink("Products", "AvailableProducts", new { materialID = material.ID })</td>
+        </tr>
+    }
+</table>

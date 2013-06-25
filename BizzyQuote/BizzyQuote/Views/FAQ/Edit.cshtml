@@ -1,0 +1,26 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "FAQ Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    FAQ faq = ViewBag.FAQ;
+    
+    <fieldset>
+        <legend>FAQ Details</legend>
+        <ol>
+            <li class="display-label">Question</li>
+            <li class="display-field">@Html.TextBox("Question", faq.Question)</li>
+            <li class="display-label">Answer</li>
+            <li class="display-field">@Html.TextBox("Answer", faq.Answer)</li>
+            <li class="display-label">Category</li>
+            <li class="display-field">@Html.TextBox("Category", faq.Category)</li>
+        </ol>
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+

@@ -1,0 +1,37 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Managers
+@{
+    ViewBag.Title = "User Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    User user = ViewBag.User;
+    
+    <fieldset>
+        <legend>Company Details</legend>
+        <ol>
+            <li class="display-label">Username</li>
+            <li class="display-field">@Html.TextBox("Username", user.Username)</li>
+            <li class="display-label">Email</li>
+            <li class="display-field">@Html.TextBox("Email", user.Email)</li>
+            <li class="display-label">First</li>
+            <li class="display-field">@Html.TextBox("FirstName", user.FirstName)</li>
+            <li class="display-label">Last</li>
+            <li class="display-field">@Html.TextBox("LastName", user.LastName)</li>
+            <li class="display-label">Active</li>
+            <li class="display-field">@Html.CheckBox("IsActive", user.IsActive)</li>
+            <li class="display-label">Company</li>
+            <li class="display-field">@Html.DropDownList("CompanyID", new SelectList(ViewBag.CompanyList, "ID", "Name"))</li>
+            
+            @Html.Hidden("CreatedOn", user.CreatedOn)
+            @Html.Hidden("ModifiedOn", user.ModifiedOn)
+            @Html.Hidden("LastLoggedIn", user.LastLoggedIn)
+        </ol>
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+

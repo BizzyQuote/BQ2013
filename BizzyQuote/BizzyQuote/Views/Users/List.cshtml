@@ -1,0 +1,39 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "User List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("New User", "Register", "Account")
+
+
+<table class="bizzy-table">
+    <thead>
+        <tr>
+            <td>Username</td>
+            <td>Email</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Company</td>
+            <td>Active</td>
+            <td>Created</td>
+            <td>Modified</td>
+            <td>Last Logged In</td>
+        </tr>
+    </thead>
+    @foreach (User user in ViewBag.Users)
+    {
+        <tr>
+            <td>@Html.ActionLink(user.Username, "Edit", new {id = user.ID})</td>
+            <td>@user.Email</td>
+            <td>@user.FirstName</td>
+            <td>@user.LastName</td>
+            <td>@if(user.Company!= null) {@user.Company.Name}</td>
+            <td>@user.IsActive.ToString()</td>
+            <td>@user.CreatedOn.ToShortDateString()</td>
+            <td>@user.ModifiedOn.ToShortDateString()</td>
+            <td>@user.LastLoggedIn.GetValueOrDefault().ToShortDateString()</td>
+        </tr>
+    }
+</table>

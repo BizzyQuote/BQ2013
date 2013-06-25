@@ -1,0 +1,38 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "Company Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    Company company = ViewBag.Company;
+    
+    <fieldset>
+        <legend>Company Details</legend>
+        <ol>
+            <li class="display-label">Company Name</li>
+            <li class="display-field">@Html.TextBox("Name", company.Name)</li>
+            <li class="display-label">Address</li>
+            <li class="display-field">@Html.TextBox("Address", company.Address)</li>
+            <li class="display-label">City</li>
+            <li class="display-field">@Html.TextBox("City", company.City)</li>
+            <li class="display-label">State</li>
+            <li class="display-field">@Html.TextBox("State", company.State)</li>
+            <li class="display-label">Zip</li>
+            <li class="display-field">@Html.TextBox("Zip", company.Zip)</li>
+            <li class="display-label">Phone</li>
+            <li class="display-field">@Html.TextBox("Phone", company.Phone)</li>
+            <li class="display-label">Email</li>
+            <li class="display-field">@Html.TextBox("Email", company.Email)</li>
+            <li class="display-label">Active</li>
+            <li class="display-field">@Html.CheckBox("IsActive", company.IsActive)</li>
+            @Html.Hidden("CreatedOn", company.CreatedOn)
+            @Html.Hidden("ModifiedOn", company.ModifiedOn)
+        </ol>
+        <input type="submit" value="Save" />
+    </fieldset>
+}
+

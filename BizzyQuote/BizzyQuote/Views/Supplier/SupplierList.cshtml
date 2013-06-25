@@ -1,0 +1,34 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "Supplier List";
+}
+
+<h2>Supplier List</h2>
+
+@Html.ActionLink("New Supplier", "Create")
+
+<table class="bizzy-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Active</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Materials</th>
+            <th>Users</th>
+        </tr>
+    </thead>
+    @foreach (Supplier supplier in ViewBag.Suppliers)
+    {
+        <tr>
+            <td>@Html.ActionLink(supplier.Name, "Edit", new { id = supplier.ID })</td>
+            <td>@supplier.IsActive</td>
+            <td>@supplier.CreatedOn.ToShortDateString()</td>
+            <td>@supplier.ModifiedOn.ToShortDateString()</td>
+            <td>@Html.ActionLink("Materials", "SupplierMaterials", new { controller = "Materials", supplierID = supplier.ID })</td>
+            <td>@Html.ActionLink("Users", "ListBySupplier", new { controller = "Users", supplierID = supplier.ID })</td>
+        </tr>
+    }
+</table>
+
+

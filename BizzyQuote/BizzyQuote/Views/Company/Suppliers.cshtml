@@ -1,0 +1,35 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "Suppliers";
+}
+
+<h2>Suppliers</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    var suppliers = ViewBag.Suppliers;
+    IEnumerable<CompanyToSupplier> companySuppliers = ViewBag.CompanySuppliers;
+    
+    <table class="bizzy-table">
+        <thead>
+            <tr>
+                <th>Supplier</th>
+                <th>Used</th>
+                <th>Use Supplier Pricing</th>
+                <th>Materials</th>
+            </tr>
+        </thead>
+        @foreach (Supplier supplier in suppliers)
+        {
+            <tr>
+                <td>@supplier.Name</td>
+                <td>@Html.CheckBox("Test", isChecked: companySuppliers.Count(cs => cs.SupplierID == supplier.ID) > 0)</td>
+                <td>@Html.CheckBox("SupplierPricing", isChecked: companySuppliers.Count(cs => cs.SupplierID == supplier.ID) > 0 && companySuppliers.First(cs => cs.SupplierID == supplier.ID).UseSupplierPricing)</td>
+                <td>@Html.ActionLink("Materials", "SupplierMaterials", new { controller = "Materials", supplierID = supplier.ID })</td>
+            </tr>
+        }
+    </table>
+    
+    <input type="submit" value="Save" />
+}

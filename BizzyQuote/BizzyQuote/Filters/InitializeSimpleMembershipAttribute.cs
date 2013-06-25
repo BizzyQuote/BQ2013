@@ -38,7 +38,7 @@ namespace BizzyQuote.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("BizzyQuote.Data.Properties.Settings.BizzyQuoteConnectionString", "User", "ID", "Username", autoCreateTables: true);
                 }
                 catch (Exception ex)
                 {

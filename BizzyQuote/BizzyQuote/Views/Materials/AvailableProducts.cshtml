@@ -1,0 +1,31 @@
+﻿@using BizzyQuote.Data.Entities
+@{
+    ViewBag.Title = "Available Products";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    var products = ViewBag.Products;
+    IEnumerable<MaterialToProduct> materialToProducts = ViewBag.MaterialToProducts;
+    
+    <table class="bizzy-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Used</th>
+            </tr>
+        </thead>
+        @foreach (Product product in products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@Html.CheckBox("Test", isChecked: materialToProducts.Count(mp => mp.ProductID == product.ID) > 0)</td>
+            </tr>
+        }
+    </table>
+    
+    <input type="submit" value="Save" />
+}

@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using WebMatrix.WebData;
 
 namespace BizzyQuote
 {
@@ -14,6 +15,13 @@ namespace BizzyQuote
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected void Application_Error()
+        {
+            #if !DEBUG
+            Server.TransferRequest("~/Home/Error");
+            #endif
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

@@ -1,0 +1,150 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Enums
+@{
+    ViewBag.Title = "Quote Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+    @Html.ValidationSummary()
+
+    
+    @using (Html.BeginForm())
+    {
+        Quote quote = ViewBag.Quote;
+        <fieldset>
+            <legend>Client Details</legend>
+            <ol>
+            
+                <li class="display-label">Customer Name</li>
+                <li class="display-field">@Html.TextBox("Name", quote.Name)</li>
+                <li class="display-label">Address</li>
+                <li class="display-field">@Html.TextBox("Address", quote.Address)</li>
+                <li class="display-label">Phone</li>
+                <li class="display-field">@Html.TextBox("Phone", quote.Phone)</li>
+                <li class="display-label">Email</li>
+                <li class="display-field">@Html.TextBox("Email", quote.Email)</li>
+                @Html.Hidden("CreatedOn", quote.CreatedOn)
+                @Html.Hidden("ModifiedOn", quote.ModifiedOn)
+                <input type="submit" value="Save" />
+            
+            </ol>
+        </fieldset>
+    }
+@using (Html.BeginForm("AddQuoteItem", "Quotes"))
+{
+    <fieldset>
+        <legend>List</legend>
+        <div>
+            @foreach (Product product in ViewBag.Products)
+            {
+                Quote quote = ViewBag.Quote;
+                @Html.Hidden("QuoteID", quote.ID)
+                @Html.Hidden("ProductID", product.ID)
+                @Html.Hidden("Measurement", product.Measurement)
+                <div class="display-label">@product.Name</div>
+                switch (product.Measurement)
+                {
+                    case (Measurement.SquareFeet):
+                        <table class="bizzy-table">
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Height</th>
+                                    <th>Width</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
+                                {
+                                    <tr>
+                                        <td>@item.Material.Name</td>
+                                        <td>@item.Height</td>
+                                        <td>@item.Width</td>
+                                        <td>@string.Format("{0:c2}", item.Amount)</td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>@Html.DropDownList("MaterialID", new SelectList(ViewBag.AvailableMaterials, "ID", "Name"))</td>
+                                    <td>@Html.TextBox("Height")</td>
+                                    <td>@Html.TextBox("Width")</td>
+                                    <td></td>
+                                    <td><input type="submit" value="Add" /></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        break;
+                    case (Measurement.LinearFeet):
+                        <table class="bizzy-table">
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Length</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
+                                {
+                                    <tr>
+                                        <td>@item.Material.Name</td>
+                                        <td>@item.LinealFt</td>
+                                        <td>@string.Format("{0:c2}", item.Amount)</td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>@Html.DropDownList("Materials", new SelectList(ViewBag.AvailableMaterials, "ID", "Name"))</td>
+                                    <td>@Html.TextBox("Lineal")</td>
+                                    <td></td>
+                                    <td>Add</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        break;
+                    case (Measurement.Constant):
+                        <table class="bizzy-table">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
+                                {
+                                    <tr>
+                                        <td>@string.Format("{0:c2}", item.Amount)</td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td>Add</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        break;
+                    default:
+                        break;
+                }
+                <br/>
+            }
+        </div>
+    </fieldset>
+}
+    
+    
+
+

@@ -5,6 +5,8 @@ using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using BizzyQuote.Data.Entities;
+using BizzyQuote.Data.Managers;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
@@ -37,6 +39,16 @@ namespace BizzyQuote.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                // update the user record
+                using (var um = new UserManager())
+                {
+                    var user = um.ByUsername(model.UserName);
+                    if (user != null)
+                    {
+                        user.LastLoggedIn = DateTime.Now;
+                        user = um.Edit(user);
+                    }
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -79,7 +91,7 @@ namespace BizzyQuote.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, IsActive = true});
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }

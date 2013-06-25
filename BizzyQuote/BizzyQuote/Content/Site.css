@@ -396,9 +396,12 @@ aside {
 
 /* forms */
 fieldset {
-    border: none;
+    /*border: none;
     margin: 0;
-    padding: 0;
+    padding: 0;*/
+    border-width: 1px;
+    margin-bottom: 12px;
+    color: #000000;
 }
 
     fieldset legend {
@@ -470,6 +473,17 @@ textarea {
         margin-right: 4px;
     }
 
+    .display-label
+{
+    float: left;
+    text-align: left;
+    width: 180px;
+    font-weight: bold;
+}
+    .display-field {
+        margin-bottom: .4em;
+        color: #707070;
+    }
 /* info and errors */
 .message-info {
     border: 1px solid;
@@ -584,6 +598,44 @@ td {
 
 tr.pager td {
     padding: 0 0.25em 0 0;
+}
+
+
+/* Bizzy Table*/
+.bizzy-table
+{
+    width: 90%;
+    border: 1px solid #aed0ea;
+    color: #6F6F6F;
+}
+.bizzy-table thead
+{
+    /*border: 1px solid #aed0ea; #deedf7*/
+    background: #deedf7  url("//d3f3hlqdx4azlp.cloudfront.net/images/jquery/ui-bg_highlight-soft_100_deedf7_1x100.png") 50% 50% repeat-x;
+    line-height: 200%;
+}
+.bizzy-table tbody tr td, .bizzy-table tbody tr th
+{
+    border-bottom: 1px solid #E5E5E5;
+    line-height: 175%;
+    text-align: left;
+}
+.bizzy-table tbody tr th
+{
+    padding-left: 7px;
+}
+.bizzy-table thead tr th.border-margin, .bizzy-table tbody tr th.border-margin
+{
+    border: none;
+    width: 3px;
+}
+.bizzy-table tbody tr.last-row td, .bizzy-table tbody tr.last-row th
+{
+    border: none;
+}
+.bizzy-table .number
+{
+    text-align: right;
 }
 
 

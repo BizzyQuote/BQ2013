@@ -1,0 +1,25 @@
+﻿@using BizzyQuote.Data.Entities
+@model BizzyQuote.Models.ProductHouseModel
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Products</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+    
+    <table class="bizzy-table">
+        <thead>
+            <tr>
+                <th>Part Of House</th>
+                <th>Product</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        @Html.EditorFor(model => model.ProductPartHouse)
+        
+    </table>
+    
+    <input type="submit" value="Save" />
+}
