@@ -1,5 +1,4 @@
-﻿@using BizzyQuote.Data.Entities
-@model BizzyQuote.Models.ProductHouseModel
+﻿@model BizzyQuote.Models.ProductHouseModel
 @{
     ViewBag.Title = "Products";
 }
@@ -8,16 +7,33 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary()
-    
+    var products = Model.Products.OrderBy(p => p.Name).ToList();
+    var partsOfHouse = Model.PartsOfHouse.OrderBy(p => p.Name).ToList();
+    var pph = Model.ProductPartHouse;
     <table class="bizzy-table">
         <thead>
             <tr>
                 <th>Part Of House</th>
-                <th>Product</th>
-                <th>Available</th>
+                @foreach (var p in products)
+                {
+                    <th>@p.Name</th>
+                }
             </tr>
         </thead>
-        @Html.EditorFor(model => model.ProductPartHouse)
+        @for (int i = 0; i < partsOfHouse.Count; i++)
+        {
+            <tr>
+                <td>@partsOfHouse[i].Name</td>
+                @for(int j = 0; j< products.Count; j++) 
+                {
+                    @Html.Hidden("ProductPartHouse[" + (i * products.Count() + j) + "].ProductLineID", partsOfHouse[i].ID)
+                    @Html.Hidden("ProductPartHouse[" + (i * products.Count() + j) + "].ProductID", products[j].ID)
+                    @Html.Hidden("ProductPartHouse[" + (i * products.Count() + j) + "].ProductLineID", pph.FirstOrDefault(m => m.ProductLineID == partsOfHouse[i].ID && m.ProductID == products[j].ID).ProductLineID)
+                    <td>@Html.CheckBox("ProductPartHouse["+(i*products.Count() +j)+"].IsActive", pph.FirstOrDefault(m => m.ProductLineID == partsOfHouse[i].ID && m.ProductID == products[j].ID).IsActive)</td>
+                }
+            </tr>
+        }
+        @*@Html.EditorFor(model => model.ProductPartHouse)*@
         
     </table>
     

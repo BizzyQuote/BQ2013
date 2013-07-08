@@ -24,9 +24,11 @@
             <li class="display-field">@Html.TextBox("LastName", user.LastName)</li>
             <li class="display-label">Active</li>
             <li class="display-field">@Html.CheckBox("IsActive", user.IsActive)</li>
-            <li class="display-label">Company</li>
-            <li class="display-field">@Html.DropDownList("CompanyID", new SelectList(ViewBag.CompanyList, "ID", "Name"))</li>
+            @*<li class="display-label">Company</li>
+            <li class="display-field">@Html.DropDownList("CompanyID", new SelectList(ViewBag.CompanyList, "ID", "Name"))</li>*@
             
+            @Html.Hidden("CompanyID", user.CompanyID)
+            @Html.Hidden("SupplierID", user.SupplierID)
             @Html.Hidden("CreatedOn", user.CreatedOn)
             @Html.Hidden("ModifiedOn", user.ModifiedOn)
             @Html.Hidden("LastLoggedIn", user.LastLoggedIn)

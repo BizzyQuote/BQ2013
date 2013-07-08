@@ -154,19 +154,19 @@ namespace BizzyQuote.Data.Managers
 
         public IEnumerable<Material> BySupplier(int supplierID)
         {
-            return db.Materials.Where(m => m.SupplierID == supplierID).OrderBy(m => m.Name);
+            return db.Materials.Where(m => m.ManufacturerID == supplierID).OrderBy(m => m.Name);
         }
 
-        public PartOfHouse CreatePartOfHouse(PartOfHouse partOfHouse)
+        public ProductLine CreateProductLine(ProductLine partOfHouse)
         {
-            db.PartOfHouses.InsertOnSubmit(partOfHouse);
+            db.ProductLines.InsertOnSubmit(partOfHouse);
             db.SubmitChanges();
             return partOfHouse;
         }
 
-        public IEnumerable<PartOfHouse> ActivePartsOfHouse()
+        public IEnumerable<ProductLine> ActivePartsOfHouse()
         {
-            return db.PartOfHouses.Where(ph => ph.IsActive);
+            return db.ProductLines.Where(ph => ph.IsActive);
         }
 
         public IEnumerable<MaterialToProduct> ByMaterialID(int materialID)
@@ -174,16 +174,64 @@ namespace BizzyQuote.Data.Managers
             return db.MaterialToProducts.Where(mp => mp.MaterialID == materialID);
         }
 
-        public IEnumerable<ProductToPartOfHouse> AllProductToPartOfHouse()
+        public IEnumerable<MaterialToProduct> ByManufacturerID(int manufacturerID)
         {
-            return db.ProductToPartOfHouses;
+            var list = from mp in db.MaterialToProducts
+                       join m in db.Materials on mp.MaterialID equals m.ID
+                       where m.ManufacturerID == manufacturerID
+                       select mp;
+            return list;
         }
 
-        public bool DeleteProductToPartOfHouse()
+        public bool DeleteMaterialToProducts(List<int> mpDelete)
         {
             try
             {
-                db.ProductToPartOfHouses.DeleteAllOnSubmit(AllProductToPartOfHouse());
+                foreach (var i in mpDelete)
+                {
+                    var mp = SingleMaterialToProduct(i);
+                    db.MaterialToProducts.DeleteOnSubmit(mp);
+                    db.SubmitChanges();
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool InsertMaterialToProducts(List<MaterialToProduct> mpUpdate)
+        {
+            db.MaterialToProducts.InsertAllOnSubmit(mpUpdate);
+            db.SubmitChanges();
+            return true;
+        }
+
+        public MaterialToProduct Create(MaterialToProduct mp)
+        {
+            db.MaterialToProducts.InsertOnSubmit(mp);
+            db.SubmitChanges();
+            return mp;
+        }
+
+        public MaterialToProduct Edit(MaterialToProduct mp)
+        {
+            db.MaterialToProducts.InsertOnSubmit(mp);
+            db.SubmitChanges();
+            return mp;
+        }
+
+        public IEnumerable<ProductToLine> AllProductToProductLine()
+        {
+            return db.ProductToLines;
+        }
+
+        public bool DeleteProductToProductLine()
+        {
+            try
+            {
+                db.ProductToLines.DeleteAllOnSubmit(AllProductToProductLine());
                 db.SubmitChanges();
                 return true;
             }
@@ -193,11 +241,21 @@ namespace BizzyQuote.Data.Managers
             }
         }
 
-        public bool CreateProductToPartOfHouse(List<ProductToPartOfHouse> parts)
+        public bool CreateProductToProductLine(List<ProductToLine> parts)
         {
-            db.ProductToPartOfHouses.InsertAllOnSubmit(parts);
+            db.ProductToLines.InsertAllOnSubmit(parts);
             db.SubmitChanges();
             return true;
+        }
+
+        public IEnumerable<MaterialToProduct> AllMaterialToProducts()
+        {
+            return db.MaterialToProducts;
+        }
+
+        public MaterialToProduct SingleMaterialToProduct(int id)
+        {
+            return db.MaterialToProducts.Single(mp => mp.ID == id);
         }
         #endregion
     }

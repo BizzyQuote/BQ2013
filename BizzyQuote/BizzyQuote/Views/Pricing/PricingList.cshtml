@@ -1,0 +1,21 @@
+﻿@model List<BizzyQuote.Models.PricingModel>
+@{
+    ViewBag.Title = "Pricing List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    <table class="bizzy-table">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        @Html.EditorFor(model => model)
+        
+    </table>
+    <input type="submit" value="Save" />
+}

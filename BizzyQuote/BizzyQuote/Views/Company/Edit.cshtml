@@ -12,6 +12,14 @@
     
     <fieldset>
         <legend>Company Details</legend>
+        <aside>
+            <h3>Company Functions</h3>
+            <ul>
+                <li>@Html.ActionLink("Suppliers", "Suppliers", new { controller = "Company", companyID = company.ID})</li>
+                <li>@Html.ActionLink("Waste Factors", "WasteFactors", new { controller = "Company", companyID = company.ID})</li>
+                <li>@Html.ActionLink("Users", "ListByCompany", new { controller = "Users" })</li>
+            </ul>
+        </aside>
         <ol>
             <li class="display-label">Company Name</li>
             <li class="display-field">@Html.TextBox("Name", company.Name)</li>
@@ -33,6 +41,8 @@
             @Html.Hidden("ModifiedOn", company.ModifiedOn)
         </ol>
         <input type="submit" value="Save" />
+        
     </fieldset>
+    
 }
 

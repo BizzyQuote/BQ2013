@@ -1,0 +1,41 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Models
+@model BizzyQuote.Models.MaterialProductGridModel
+
+@{
+    ViewBag.Title = "Material Products Grid";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+    List<Material> materials = Model.Materials.ToList();
+    List<Product> products = Model.Products.OrderBy(p => p.Name).ToList();
+     <table class="bizzy-table">
+         <thead>
+             <tr>
+                <th>Material Name</th>
+                @foreach(var product in products.OrderBy(p => p.Name))
+                {
+                    <th>@product.Name</th>
+                }
+             </tr>
+         </thead>
+        @for(int i=0; i< materials.Count; i++)
+        {
+            <tr>
+                <td>@materials[i].Name</td>
+                @for(int j = 0; j< products.Count; j++) 
+                {
+                    @Html.Hidden("MaterialProducts[" + (i * products.Count() + j) + "].MaterialID", materials[i].ID)
+                    @Html.Hidden("MaterialProducts[" + (i * products.Count() + j) + "].ProductID", products[j].ID)
+                    @Html.Hidden("MaterialProducts[" + (i * products.Count() + j) + "].MaterialToProductID", Model.MaterialProducts.FirstOrDefault(m => m.MaterialID == materials[i].ID && m.ProductID == products[j].ID).MaterialToProductID)
+                    <td>@Html.CheckBox("MaterialProducts["+(i*products.Count() +j)+"].IsActive", Model.MaterialProducts.FirstOrDefault(m => m.MaterialID == materials[i].ID && m.ProductID == products[j].ID).IsActive)</td>
+                }
+            </tr>
+        }
+    </table>
+    
+    <input type="submit" value="Save" />
+}

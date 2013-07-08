@@ -8,7 +8,7 @@ using BizzyQuote.Data.Managers;
 
 namespace BizzyQuote.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator,Manager,Supplier")]
     public class UsersController : Controller
     {
         public ActionResult Index()
@@ -16,6 +16,7 @@ namespace BizzyQuote.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult ListAll(int? companyID)
         {
             List<User> users = new List<User>();
@@ -28,6 +29,7 @@ namespace BizzyQuote.Controllers
             return View("List");
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult List(int? companyID)
         {
             List<User> users = new List<User>();
@@ -47,13 +49,37 @@ namespace BizzyQuote.Controllers
             return View("List");
         }
 
-        public ActionResult ListBySupplier(int supplierID)
+        [Authorize(Roles = "Administrator,Supplier")]
+        public ActionResult ListBySupplier()
         {
             List<User> users = new List<User>();
+            int supplierID = 0;
             using (var um = new UserManager())
             {
-
+                var currentUser = um.ByUsername(User.Identity.Name);
+                if (currentUser.SupplierID != null)
+                {
+                    supplierID = currentUser.SupplierID.GetValueOrDefault();
+                }
                 users = um.BySupplier(supplierID).OrderByDescending(u => u.CreatedOn).ToList();
+                ViewBag.Users = users;
+            }
+            return View("List");
+        }
+
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult ListByCompany()
+        {
+            List<User> users = new List<User>();
+            int companyID = 0;
+            using (var um = new UserManager())
+            {
+                var currentUser = um.ByUsername(User.Identity.Name);
+                if (currentUser.CompanyID != null)
+                {
+                    companyID = currentUser.CompanyID.GetValueOrDefault();
+                }
+                users = um.ByCompany(companyID).OrderByDescending(u => u.CreatedOn).ToList();
                 ViewBag.Users = users;
             }
             return View("List");

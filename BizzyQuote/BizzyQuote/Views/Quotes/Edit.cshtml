@@ -25,121 +25,148 @@
                 <li class="display-field">@Html.TextBox("Phone", quote.Phone)</li>
                 <li class="display-label">Email</li>
                 <li class="display-field">@Html.TextBox("Email", quote.Email)</li>
+                @Html.Hidden("CompanyID", quote.CompanyID)
+                @Html.Hidden("EmployeeID", quote.EmployeeID)
                 @Html.Hidden("CreatedOn", quote.CreatedOn)
                 @Html.Hidden("ModifiedOn", quote.ModifiedOn)
-                <input type="submit" value="Save" />
-            
             </ol>
         </fieldset>
+        <input type="submit" value="Save" />
     }
 @using (Html.BeginForm("AddQuoteItem", "Quotes"))
 {
     <fieldset>
         <legend>List</legend>
         <div>
-            @foreach (Product product in ViewBag.Products)
+            @foreach (ProductLine partOfHouse in ViewBag.PartsOfHouse)
             {
-                Quote quote = ViewBag.Quote;
-                @Html.Hidden("QuoteID", quote.ID)
-                @Html.Hidden("ProductID", product.ID)
-                @Html.Hidden("Measurement", product.Measurement)
-                <div class="display-label">@product.Name</div>
-                switch (product.Measurement)
-                {
-                    case (Measurement.SquareFeet):
-                        <table class="bizzy-table">
-                            <thead>
-                                <tr>
-                                    <th>Material</th>
-                                    <th>Height</th>
-                                    <th>Width</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
-                                {
-                                    <tr>
-                                        <td>@item.Material.Name</td>
-                                        <td>@item.Height</td>
-                                        <td>@item.Width</td>
-                                        <td>@string.Format("{0:c2}", item.Amount)</td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>@Html.DropDownList("MaterialID", new SelectList(ViewBag.AvailableMaterials, "ID", "Name"))</td>
-                                    <td>@Html.TextBox("Height")</td>
-                                    <td>@Html.TextBox("Width")</td>
-                                    <td></td>
-                                    <td><input type="submit" value="Add" /></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        break;
-                    case (Measurement.LinearFeet):
-                        <table class="bizzy-table">
-                            <thead>
-                                <tr>
-                                    <th>Material</th>
-                                    <th>Length</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
-                                {
-                                    <tr>
-                                        <td>@item.Material.Name</td>
-                                        <td>@item.LinealFt</td>
-                                        <td>@string.Format("{0:c2}", item.Amount)</td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>@Html.DropDownList("Materials", new SelectList(ViewBag.AvailableMaterials, "ID", "Name"))</td>
-                                    <td>@Html.TextBox("Lineal")</td>
-                                    <td></td>
-                                    <td>Add</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        break;
-                    case (Measurement.Constant):
-                        <table class="bizzy-table">
-                            <thead>
-                                <tr>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID))
-                                {
-                                    <tr>
-                                        <td>@string.Format("{0:c2}", item.Amount)</td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td>Add</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        break;
-                    default:
-                        break;
-                }
+                IEnumerable<ProductToProductLine> ptpoh = ViewBag.ProductToProductLine;
+                IEnumerable<Product> pros = ViewBag.Products;
+                IEnumerable<MaterialToProduct> mtps = ViewBag.MaterialToProducts;
+                IEnumerable<Material> available = ViewBag.AvailableMaterials;
+                <h2>@partOfHouse.Name</h2>
                 <br/>
+
+                foreach (Product product in pros.Where(p => ptpoh.Where(d => d.ProductLineID == partOfHouse.ID).Select(d => d.ProductID).Contains(p.ID)))
+                {
+                    Quote quote = ViewBag.Quote;
+                    @Html.Hidden("QuoteID", quote.ID)
+                    @Html.Hidden("CompanyID", quote.CompanyID)
+                    @Html.Hidden("EmployeeID", quote.EmployeeID)
+                    @Html.Hidden("ProductID", product.ID)
+                    @Html.Hidden("ProductLineID", partOfHouse.ID)
+                    @Html.Hidden("Measurement", product.Measurement)
+                    <div class="display-label">@product.Name</div>
+                    switch (product.Measurement)
+                    {
+                        case (Measurement.SquareFeet):
+                            <table class="bizzy-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Height</th>
+                                        <th>Width</th>
+                                        <th>Square Feet</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID && qi.ProductLineID == partOfHouse.ID))
+                                    {
+                                        <tr>
+                                            <td>@item.Material.Name</td>
+                                            <td>@item.Height</td>
+                                            <td>@item.Width</td>
+                                            <td>@item.SquareFt</td>
+                                            <td>@string.Format("{0:c2}", item.Amount)</td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Totals:</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>@quote.QuoteItems.Where(qi => qi.ProductID == product.ID && qi.ProductLineID == partOfHouse.ID).Sum(qi => qi.SquareFt)</td>
+                                        <td>@string.Format("{0:c2}", quote.QuoteItems.Where(qi => qi.ProductID == product.ID && qi.ProductLineID == partOfHouse.ID).Sum(qi => qi.Amount))</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.DropDownList("MaterialID", new SelectList(
+                                           available.Where(a => mtps.Where(mp => mp.ProductID == product.ID).Select(mp => mp.MaterialID).Contains(a.ID)), "ID", "Name"))</td>
+                                        <td>@Html.TextBox("Height", null, new { @class = "quote-textbox" })</td>
+                                        <td>@Html.TextBox("Width", null, new { @class = "quote-textbox" })</td>
+                                        <td>@Html.TextBox("SquareFt", null, new { @class = "quote-textbox" })</td>
+                                        <td></td>
+                                        <td><input type="submit" value="Add" /></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            break;
+                        case (Measurement.LinearFeet):
+                            <table class="bizzy-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Length</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID && qi.ProductLineID == partOfHouse.ID))
+                                    {
+                                        <tr>
+                                            <td>@item.Material.Name</td>
+                                            <td>@item.LinearFt</td>
+                                            <td>@string.Format("{0:c2}", item.Amount)</td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>@Html.DropDownList("MaterialID", new SelectList(
+                                           available.Where(a => mtps.Where(mp => mp.ProductID == product.ID).Select(mp => mp.MaterialID).Contains(a.ID)), "ID", "Name"))</td>
+                                        <td>@Html.TextBox("LinearFt", null, new { @class = "quote-textbox" })</td>
+                                        <td></td>
+                                        <td><input type="submit" value="Add" /></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            break;
+                        case (Measurement.Constant):
+                            <table class="bizzy-table">
+                                <thead>
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (QuoteItem item in quote.QuoteItems.Where(qi => qi.ProductID == product.ID && qi.ProductLineID == partOfHouse.ID))
+                                    {
+                                        <tr>
+                                            <td>@string.Format("{0:c2}", item.Amount)</td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td>Add</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            break;
+                        default:
+                            break;
+                    }
+                    <br/>
+                }
             }
         </div>
     </fieldset>

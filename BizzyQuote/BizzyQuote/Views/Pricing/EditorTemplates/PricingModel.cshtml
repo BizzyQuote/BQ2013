@@ -1,0 +1,14 @@
+﻿@model BizzyQuote.Models.PricingModel
+
+<tr>
+    @Html.Hidden("ID", Model.ID)
+    @Html.Hidden("CompanyID", Model.CompanyID)
+    @Html.Hidden("MaterialID", Model.MaterialID)
+    @Html.Hidden("SupplierID", Model.SupplierID)
+    @Html.Hidden("CompanyID", Model.CompanyID)
+    @Html.Hidden("CreatedOn", Model.CreatedOn)
+    @Html.Hidden("ModifiedOn", Model.ModifiedOn)
+    @Html.Hidden("ModifiedBy", Model.ModifiedBy)
+    <td>@Model.MaterialName</td>
+    <td>@Html.EditorFor(model => model.Price)</td>
+</tr>

@@ -52,9 +52,12 @@
     <Compile Include="Enums\BillStatus.cs" />
     <Compile Include="Enums\ImageType.cs" />
     <Compile Include="Enums\Measurement.cs" />
+    <Compile Include="Enums\QuoteOptionCategory.cs" />
+    <Compile Include="Enums\TableName.cs" />
     <Compile Include="Managers\CompanyManager.cs" />
     <Compile Include="Managers\FAQManager.cs" />
     <Compile Include="Managers\MaterialsManager.cs" />
+    <Compile Include="Managers\PricingManager.cs" />
     <Compile Include="Managers\QuoteManager.cs" />
     <Compile Include="Managers\SupplierManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
@@ -85,6 +88,12 @@
     <None Include="Entities\BizzyQuote.dbml.layout">
       <DependentUpon>BizzyQuote.dbml</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BizzyQuote.Core\BizzyQuote.Core.csproj">
+      <Project>{bd36c605-5545-4b2f-a7d7-b79d9ac27279}</Project>
+      <Name>BizzyQuote.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

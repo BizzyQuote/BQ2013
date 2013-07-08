@@ -10,4 +10,9 @@ namespace BizzyQuote.Data.Entities
     {
         public List<Material> AvailableMaterials { get; set; }
     }
+
+    public partial class Material
+    {
+        public List<MaterialToProduct> MaterialProducts { get; set; }
+    }
 }

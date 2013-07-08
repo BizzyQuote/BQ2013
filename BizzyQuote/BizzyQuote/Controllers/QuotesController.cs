@@ -19,6 +19,7 @@ namespace BizzyQuote.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult List()
         {
             List<Quote> quotes;
@@ -32,6 +33,50 @@ namespace BizzyQuote.Controllers
             return View("QuoteList");
         }
 
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult ListByCompany()
+        {
+            List<Quote> quotes;
+            int companyID = 0;
+            using (var um = new UserManager())
+            {
+                // any user tied to a company can only see their company quotes
+                var currentUser = um.ByUsername(User.Identity.Name);
+                if (currentUser.CompanyID != null)
+                {
+                    companyID = currentUser.CompanyID.GetValueOrDefault();
+                }
+            }
+            using (var qm = new QuoteManager())
+            {
+                quotes = qm.ActiveByCompany(companyID).OrderByDescending(q => q.CreatedOn).ToList();
+            }
+
+            ViewBag.Quotes = quotes;
+            return View("QuoteList");
+        }
+
+        [Authorize(Roles = "Administrator,Manager,Member")]
+        public ActionResult ListByEmployee()
+        {
+            List<Quote> quotes;
+            int userID = 0;
+            using (var um = new UserManager())
+            {
+                // any normal user can only see their own quotes
+                var currentUser = um.ByUsername(User.Identity.Name);
+                userID = currentUser.ID;
+            }
+            using (var qm = new QuoteManager())
+            {
+                quotes = qm.ActiveByEmployee(userID).OrderByDescending(q => q.CreatedOn).ToList();
+            }
+
+            ViewBag.Quotes = quotes;
+            return View("QuoteList");
+        }
+
+        [Authorize(Roles = "Administrator,Manager,Member")]
         public ActionResult Create()
         {
             // We create a shell of a quote and redirect to the edit
@@ -53,6 +98,7 @@ namespace BizzyQuote.Controllers
             return RedirectToAction("Edit", new { id = quote.ID});
         }
 
+        [Authorize(Roles = "Administrator,Manager,Member")]
         public ActionResult Edit(int id)
         {
             Quote quote;
@@ -82,6 +128,8 @@ namespace BizzyQuote.Controllers
 
                 var partsOfHouse = mm.ActivePartsOfHouse().ToList();
                 ViewBag.PartsOfHouse = partsOfHouse.AsEnumerable();
+                ViewBag.ProductToProductLine = mm.AllProductToProductLine().ToList();
+                ViewBag.MaterialToProducts = mm.AllMaterialToProducts().ToList();
             }
 
             
@@ -92,6 +140,7 @@ namespace BizzyQuote.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Manager,Member")]
         public ActionResult Edit(Quote quote)
         {
             quote.IsActive = true;
@@ -103,30 +152,52 @@ namespace BizzyQuote.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Manager,Member")]
         public ActionResult AddQuoteItem(QuoteItem item)
         {
             Material material;
+            List<WasteFactor> wasteFactors = new List<WasteFactor>();
             using (var mm = new MaterialsManager())
             {
                 material = mm.SingleMaterial(item.MaterialID.GetValueOrDefault());
             }
-            // calculate the amount and save
-            switch (item.Measurement)
-            {
-                case(Measurement.SquareFeet):
-                    item.Amount = item.Height*item.Width*material.UnitCost / material.UnitSize; 
-                    break;
-                case (Measurement.LinearFeet):
-                    item.Amount = item.LinearFt*material.UnitCost / material.UnitSize;
-                    break;
-                case (Measurement.Constant):
-                    break;
-            }
             using (var qm = new QuoteManager())
             {
+                var quote = qm.Single(item.QuoteID);
+                using (var wfm = new WasteFactorManager())
+                {
+                    wasteFactors = wfm.ByCompany(quote.CompanyID.GetValueOrDefault()).ToList();
+                }
+                decimal wasteFactor =
+                            wasteFactors.Any(
+                                wf => wf.ProductID == item.ProductID && wf.ProductLineID == item.ProductLineID)
+                                ? wasteFactors.First(
+                                    wf => wf.ProductID == item.ProductID && wf.ProductLineID == item.ProductLineID)
+                                              .WasteFactor1.GetValueOrDefault() : 0M;
+                // calculate the amount and save
+                switch (item.Measurement)
+                {
+                    case(Measurement.SquareFeet):
+                        if (item.SquareFt.GetValueOrDefault() == 0)
+                        {
+                            item.SquareFt = item.Height*item.Width;
+                        }
+                        var pieceSqFt = (material.Height - material.Overlap.GetValueOrDefault())*(1M/12M)*material.Width;
+                        var pieces = Math.Ceiling((decimal)(item.SquareFt.GetValueOrDefault() * (1M + wasteFactor) / pieceSqFt));
+
+                        item.Amount = pieces * material.UnitCost; 
+                        break;
+                    case (Measurement.LinearFeet):
+                        item.Amount = item.LinearFt * (1M + wasteFactor) * material.UnitCost / material.Width;
+                        break;
+                    case (Measurement.Constant):
+                        item.Amount = item.Dollars;
+                        break;
+                }
+            
                 item = qm.CreateItem(item);
             }
-            return Edit(item.QuoteID);
+            return RedirectToAction("Edit", new { id = item.QuoteID });
         }
 
     }

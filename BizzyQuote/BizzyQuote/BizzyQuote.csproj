@@ -190,6 +190,7 @@
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
+    <Compile Include="Controllers\PricingController.cs" />
     <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -199,6 +200,8 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\MaterialModel.cs" />
+    <Compile Include="Models\PricingModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -259,6 +262,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\BizzyLogo.png" />
     <Content Include="Views\Home\Error.cshtml" />
     <None Include="Properties\PublishProfiles\bizzyquote.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
@@ -340,6 +344,11 @@
     <Content Include="Views\Company\WasteFactors.cshtml" />
     <Content Include="Views\Supplier\EditorTemplates\ProductToPartOfHouseModel.cshtml" />
     <Content Include="Views\Company\EditorTemplates\WasteFactorModel.cshtml" />
+    <Content Include="Views\Home\Pricing.cshtml" />
+    <Content Include="Views\Materials\MaterialProductsGrid.cshtml" />
+    <Content Include="Views\Materials\EditorTemplates\MaterialToProductModel.cshtml" />
+    <Content Include="Views\Pricing\PricingList.cshtml" />
+    <Content Include="Views\Pricing\EditorTemplates\PricingModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -32,6 +32,7 @@ namespace BizzyQuote.Models
 
         [Required]
         [Display(Name = "Phone")]
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 
         [Required]
@@ -43,9 +44,9 @@ namespace BizzyQuote.Models
     {
         public int ID { get; set; }
         public int ProductID { get; set; }
-        public int PartOfHouseID { get; set; }
+        public int ProductLineID { get; set; }
         public string ProductName { get; set; }
-        public string PartOfHouseName { get; set; }
+        public string ProductLineName { get; set; }
         [Display(Name = "Waste Factor")]
         public decimal Factor { get; set; }
         public int CompanyID { get; set; }

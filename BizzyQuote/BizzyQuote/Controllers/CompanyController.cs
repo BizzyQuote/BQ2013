@@ -88,12 +88,12 @@ namespace BizzyQuote.Controllers
         {
             var wasteFactors = new List<WasteFactor>();
             var model = new List<WasteFactorModel>();
-            var prodParts = new List<ProductToPartOfHouse>();
+            var prodParts = new List<ProductToLine>();
             List<Product> products = new List<Product>();
-            List<PartOfHouse> partsOfHouse = new List<PartOfHouse>();
+            List<ProductLine> partsOfHouse = new List<ProductLine>();
             using (var mm = new MaterialsManager())
             {
-                prodParts = mm.AllProductToPartOfHouse().ToList();
+                prodParts = mm.AllProductToProductLine().ToList();
                 products = mm.AllProducts().ToList();
                 partsOfHouse = mm.ActivePartsOfHouse().ToList();
             }
@@ -105,7 +105,7 @@ namespace BizzyQuote.Controllers
 
             foreach (var pph in prodParts)
             {
-                if (!wasteFactors.Any(wf => wf.ProductID == pph.ProductID && wf.PartOfHouseID == pph.PartOfHouseID))
+                if (!wasteFactors.Any(wf => wf.ProductID == pph.ProductID && wf.ProductLineID == pph.ProductLineID))
                 {
                     model.Add(new WasteFactorModel
                         {
@@ -113,17 +113,17 @@ namespace BizzyQuote.Controllers
                             CreatedOn = DateTime.Now,
                             ModifiedOn = DateTime.Now,
                             ModifiedBy = User.Identity.Name,
-                            PartOfHouseID = pph.PartOfHouseID,
+                            ProductLineID = pph.ProductLineID,
                             ProductID = pph.ProductID,
                             ProductName = products.FirstOrDefault(p => p.ID == pph.ProductID).Name,
-                            PartOfHouseName = partsOfHouse.FirstOrDefault(p => p.ID == pph.ProductID).Name
+                            ProductLineName = partsOfHouse.FirstOrDefault(p => p.ID == pph.ProductID).Name
                         });
                 }
                 else
                 {
                     var fact =
                         wasteFactors.FirstOrDefault(
-                            wf => wf.ProductID == pph.ProductID && wf.PartOfHouseID == pph.PartOfHouseID);
+                            wf => wf.ProductID == pph.ProductID && wf.ProductLineID == pph.ProductLineID);
                     model.Add(new WasteFactorModel
                         {
                             ID = fact.ID,
@@ -131,10 +131,10 @@ namespace BizzyQuote.Controllers
                             CreatedOn = fact.CreatedOn,
                             ModifiedOn = fact.CreatedOn,
                             ModifiedBy = fact.ModifiedBy,
-                            PartOfHouseID = pph.PartOfHouseID,
+                            ProductLineID = pph.ProductLineID,
                             ProductID = pph.ProductID,
                             ProductName = products.FirstOrDefault(p => p.ID == pph.ProductID).Name,
-                            PartOfHouseName = partsOfHouse.FirstOrDefault(p => p.ID == pph.ProductID).Name,
+                            ProductLineName = partsOfHouse.FirstOrDefault(p => p.ID == pph.ProductID).Name,
                             Factor = fact.WasteFactor1.GetValueOrDefault()
                         });
                 }
@@ -154,7 +154,7 @@ namespace BizzyQuote.Controllers
                     ModifiedOn = model.ModifiedOn, 
                     ModifiedBy = model.ModifiedBy, 
                     WasteFactor1 = model.Factor, 
-                    PartOfHouseID = model.PartOfHouseID, 
+                    ProductLineID = model.ProductLineID, 
                     ProductID = model.ProductID
                 }).ToList();
 
@@ -163,6 +163,27 @@ namespace BizzyQuote.Controllers
                 var result = wfm.UpdateWasteFactors(factors);
             }
             return RedirectToAction("List");
+        }
+
+        [Authorize(Roles = "Manager")]
+        public ActionResult Profile()
+        {
+            Company company;
+            using (var um = new UserManager())
+            {
+                int companyID = 0;
+                // any user tied to a company can only see their users
+                var currentUser = um.ByUsername(User.Identity.Name);
+                if (currentUser.CompanyID != null)
+                {
+                    companyID = currentUser.CompanyID.GetValueOrDefault();
+                }
+                using (var cm = new CompanyManager())
+                {
+                    company = cm.Single(companyID);
+                }
+            }
+            return RedirectToAction("Edit", "Company", new { id = company.ID});
         }
     }
 }

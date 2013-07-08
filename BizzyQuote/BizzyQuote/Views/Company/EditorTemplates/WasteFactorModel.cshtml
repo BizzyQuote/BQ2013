@@ -3,12 +3,12 @@
 <tr>
     @Html.Hidden("ID", Model.ID)
     @Html.Hidden("ProductID", Model.ProductID)
-    @Html.Hidden("PartOfHouseID", Model.PartOfHouseID)
+    @Html.Hidden("ProductLineID", Model.ProductLineID)
     @Html.Hidden("CompanyID", Model.CompanyID)
     @Html.Hidden("CreatedOn", Model.CreatedOn)
     @Html.Hidden("ModifiedOn", Model.ModifiedOn)
     @Html.Hidden("ModifiedBy", Model.ModifiedBy)
-    <td>@Model.PartOfHouseName</td>
+    <td>@Model.ProductLineName</td>
     <td>@Model.ProductName</td>
     <td>@Html.EditorFor(model => model.Factor)</td>
 </tr>

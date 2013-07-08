@@ -45,36 +45,45 @@ namespace BizzyQuote.Data.Entities
     partial void InsertFAQ(FAQ instance);
     partial void UpdateFAQ(FAQ instance);
     partial void DeleteFAQ(FAQ instance);
-    partial void InsertImage(Image instance);
-    partial void UpdateImage(Image instance);
-    partial void DeleteImage(Image instance);
+    partial void InsertFile(File instance);
+    partial void UpdateFile(File instance);
+    partial void DeleteFile(File instance);
+    partial void InsertManufacturer(Manufacturer instance);
+    partial void UpdateManufacturer(Manufacturer instance);
+    partial void DeleteManufacturer(Manufacturer instance);
     partial void InsertMaterial(Material instance);
     partial void UpdateMaterial(Material instance);
     partial void DeleteMaterial(Material instance);
     partial void InsertMaterialToProduct(MaterialToProduct instance);
     partial void UpdateMaterialToProduct(MaterialToProduct instance);
     partial void DeleteMaterialToProduct(MaterialToProduct instance);
-    partial void InsertPartOfHouse(PartOfHouse instance);
-    partial void UpdatePartOfHouse(PartOfHouse instance);
-    partial void DeletePartOfHouse(PartOfHouse instance);
     partial void InsertProduct(Product instance);
     partial void UpdateProduct(Product instance);
     partial void DeleteProduct(Product instance);
-    partial void InsertProductToPartOfHouse(ProductToPartOfHouse instance);
-    partial void UpdateProductToPartOfHouse(ProductToPartOfHouse instance);
-    partial void DeleteProductToPartOfHouse(ProductToPartOfHouse instance);
+    partial void InsertProductLine(ProductLine instance);
+    partial void UpdateProductLine(ProductLine instance);
+    partial void DeleteProductLine(ProductLine instance);
+    partial void InsertProductToLine(ProductToLine instance);
+    partial void UpdateProductToLine(ProductToLine instance);
+    partial void DeleteProductToLine(ProductToLine instance);
     partial void InsertQuote(Quote instance);
     partial void UpdateQuote(Quote instance);
     partial void DeleteQuote(Quote instance);
     partial void InsertQuoteItem(QuoteItem instance);
     partial void UpdateQuoteItem(QuoteItem instance);
     partial void DeleteQuoteItem(QuoteItem instance);
+    partial void InsertQuoteOption(QuoteOption instance);
+    partial void UpdateQuoteOption(QuoteOption instance);
+    partial void DeleteQuoteOption(QuoteOption instance);
     partial void InsertSupplier(Supplier instance);
     partial void UpdateSupplier(Supplier instance);
     partial void DeleteSupplier(Supplier instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertPricing(Pricing instance);
+    partial void UpdatePricing(Pricing instance);
+    partial void DeletePricing(Pricing instance);
     #endregion
 		
 		public BizzyQuoteDataContext() : 
@@ -147,11 +156,19 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		public System.Data.Linq.Table<Image> Images
+		public System.Data.Linq.Table<File> Files
 		{
 			get
 			{
-				return this.GetTable<Image>();
+				return this.GetTable<File>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Manufacturer> Manufacturers
+		{
+			get
+			{
+				return this.GetTable<Manufacturer>();
 			}
 		}
 		
@@ -171,22 +188,6 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		public System.Data.Linq.Table<PartOfHouse> PartOfHouses
-		{
-			get
-			{
-				return this.GetTable<PartOfHouse>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Pricing> Pricings
-		{
-			get
-			{
-				return this.GetTable<Pricing>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Product> Products
 		{
 			get
@@ -195,11 +196,19 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductToPartOfHouse> ProductToPartOfHouses
+		public System.Data.Linq.Table<ProductLine> ProductLines
 		{
 			get
 			{
-				return this.GetTable<ProductToPartOfHouse>();
+				return this.GetTable<ProductLine>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProductToLine> ProductToLines
+		{
+			get
+			{
+				return this.GetTable<ProductToLine>();
 			}
 		}
 		
@@ -219,6 +228,14 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
+		public System.Data.Linq.Table<QuoteOption> QuoteOptions
+		{
+			get
+			{
+				return this.GetTable<QuoteOption>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Supplier> Suppliers
 		{
 			get
@@ -232,6 +249,14 @@ namespace BizzyQuote.Data.Entities
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Pricing> Pricings
+		{
+			get
+			{
+				return this.GetTable<Pricing>();
 			}
 		}
 	}
@@ -469,7 +494,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private int _ProductID;
 		
-		private int _PartOfHouseID;
+		private int _ProductLineID;
 		
 		private int _CompanyID;
 		
@@ -483,9 +508,9 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntityRef<Company> _Company;
 		
-		private EntityRef<PartOfHouse> _PartOfHouse;
-		
 		private EntityRef<Product> _Product;
+		
+		private EntityRef<ProductLine> _ProductLine;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -495,8 +520,8 @@ namespace BizzyQuote.Data.Entities
     partial void OnIDChanged();
     partial void OnProductIDChanging(int value);
     partial void OnProductIDChanged();
-    partial void OnPartOfHouseIDChanging(int value);
-    partial void OnPartOfHouseIDChanged();
+    partial void OnProductLineIDChanging(int value);
+    partial void OnProductLineIDChanged();
     partial void OnCompanyIDChanging(int value);
     partial void OnCompanyIDChanged();
     partial void OnWasteFactor1Changing(System.Nullable<decimal> value);
@@ -512,8 +537,8 @@ namespace BizzyQuote.Data.Entities
 		public WasteFactor()
 		{
 			this._Company = default(EntityRef<Company>);
-			this._PartOfHouse = default(EntityRef<PartOfHouse>);
 			this._Product = default(EntityRef<Product>);
+			this._ProductLine = default(EntityRef<ProductLine>);
 			OnCreated();
 		}
 		
@@ -561,26 +586,26 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartOfHouseID", DbType="Int NOT NULL")]
-		public int PartOfHouseID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductLineID", DbType="Int NOT NULL")]
+		public int ProductLineID
 		{
 			get
 			{
-				return this._PartOfHouseID;
+				return this._ProductLineID;
 			}
 			set
 			{
-				if ((this._PartOfHouseID != value))
+				if ((this._ProductLineID != value))
 				{
-					if (this._PartOfHouse.HasLoadedOrAssignedValue)
+					if (this._ProductLine.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnPartOfHouseIDChanging(value);
+					this.OnProductLineIDChanging(value);
 					this.SendPropertyChanging();
-					this._PartOfHouseID = value;
-					this.SendPropertyChanged("PartOfHouseID");
-					this.OnPartOfHouseIDChanged();
+					this._ProductLineID = value;
+					this.SendPropertyChanged("ProductLineID");
+					this.OnProductLineIDChanged();
 				}
 			}
 		}
@@ -723,40 +748,6 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_WasteFactor", Storage="_PartOfHouse", ThisKey="PartOfHouseID", OtherKey="ID", IsForeignKey=true)]
-		public PartOfHouse PartOfHouse
-		{
-			get
-			{
-				return this._PartOfHouse.Entity;
-			}
-			set
-			{
-				PartOfHouse previousValue = this._PartOfHouse.Entity;
-				if (((previousValue != value) 
-							|| (this._PartOfHouse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PartOfHouse.Entity = null;
-						previousValue.WasteFactors.Remove(this);
-					}
-					this._PartOfHouse.Entity = value;
-					if ((value != null))
-					{
-						value.WasteFactors.Add(this);
-						this._PartOfHouseID = value.ID;
-					}
-					else
-					{
-						this._PartOfHouseID = default(int);
-					}
-					this.SendPropertyChanged("PartOfHouse");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_WasteFactor", Storage="_Product", ThisKey="ProductID", OtherKey="ID", IsForeignKey=true)]
 		public Product Product
 		{
@@ -787,6 +778,40 @@ namespace BizzyQuote.Data.Entities
 						this._ProductID = default(int);
 					}
 					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_WasteFactor", Storage="_ProductLine", ThisKey="ProductLineID", OtherKey="ID", IsForeignKey=true)]
+		public ProductLine ProductLine
+		{
+			get
+			{
+				return this._ProductLine.Entity;
+			}
+			set
+			{
+				ProductLine previousValue = this._ProductLine.Entity;
+				if (((previousValue != value) 
+							|| (this._ProductLine.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProductLine.Entity = null;
+						previousValue.WasteFactors.Remove(this);
+					}
+					this._ProductLine.Entity = value;
+					if ((value != null))
+					{
+						value.WasteFactors.Add(this);
+						this._ProductLineID = value.ID;
+					}
+					else
+					{
+						this._ProductLineID = default(int);
+					}
+					this.SendPropertyChanged("ProductLine");
 				}
 			}
 		}
@@ -850,6 +875,8 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntitySet<User> _Users;
 		
+		private EntitySet<Pricing> _Pricings;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -885,6 +912,7 @@ namespace BizzyQuote.Data.Entities
 			this._CompanyToSuppliers = new EntitySet<CompanyToSupplier>(new Action<CompanyToSupplier>(this.attach_CompanyToSuppliers), new Action<CompanyToSupplier>(this.detach_CompanyToSuppliers));
 			this._Quotes = new EntitySet<Quote>(new Action<Quote>(this.attach_Quotes), new Action<Quote>(this.detach_Quotes));
 			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
+			this._Pricings = new EntitySet<Pricing>(new Action<Pricing>(this.attach_Pricings), new Action<Pricing>(this.detach_Pricings));
 			OnCreated();
 		}
 		
@@ -1173,6 +1201,19 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_Pricing", Storage="_Pricings", ThisKey="ID", OtherKey="CompanyID")]
+		public EntitySet<Pricing> Pricings
+		{
+			get
+			{
+				return this._Pricings;
+			}
+			set
+			{
+				this._Pricings.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1248,6 +1289,18 @@ namespace BizzyQuote.Data.Entities
 		}
 		
 		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = null;
+		}
+		
+		private void attach_Pricings(Pricing entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = this;
+		}
+		
+		private void detach_Pricings(Pricing entity)
 		{
 			this.SendPropertyChanging();
 			entity.Company = null;
@@ -1628,8 +1681,8 @@ namespace BizzyQuote.Data.Entities
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Images")]
-	public partial class Image : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Files")]
+	public partial class File : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1638,7 +1691,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private System.Nullable<int> _QuoteID;
 		
-		private string _ImageURL;
+		private string _FileURL;
 		
 		private string _Name;
 		
@@ -1656,8 +1709,8 @@ namespace BizzyQuote.Data.Entities
     partial void OnIDChanged();
     partial void OnQuoteIDChanging(System.Nullable<int> value);
     partial void OnQuoteIDChanged();
-    partial void OnImageURLChanging(string value);
-    partial void OnImageURLChanged();
+    partial void OnFileURLChanging(string value);
+    partial void OnFileURLChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnNotesChanging(string value);
@@ -1666,7 +1719,7 @@ namespace BizzyQuote.Data.Entities
     partial void OnTypeChanged();
     #endregion
 		
-		public Image()
+		public File()
 		{
 			this._Quote = default(EntityRef<Quote>);
 			OnCreated();
@@ -1716,22 +1769,22 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageURL", DbType="VarChar(100)")]
-		public string ImageURL
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileURL", DbType="VarChar(100)")]
+		public string FileURL
 		{
 			get
 			{
-				return this._ImageURL;
+				return this._FileURL;
 			}
 			set
 			{
-				if ((this._ImageURL != value))
+				if ((this._FileURL != value))
 				{
-					this.OnImageURLChanging(value);
+					this.OnFileURLChanging(value);
 					this.SendPropertyChanging();
-					this._ImageURL = value;
-					this.SendPropertyChanged("ImageURL");
-					this.OnImageURLChanged();
+					this._FileURL = value;
+					this.SendPropertyChanged("FileURL");
+					this.OnFileURLChanged();
 				}
 			}
 		}
@@ -1796,7 +1849,7 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_Image", Storage="_Quote", ThisKey="QuoteID", OtherKey="ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_File", Storage="_Quote", ThisKey="QuoteID", OtherKey="ID", IsForeignKey=true)]
 		public Quote Quote
 		{
 			get
@@ -1813,12 +1866,12 @@ namespace BizzyQuote.Data.Entities
 					if ((previousValue != null))
 					{
 						this._Quote.Entity = null;
-						previousValue.Images.Remove(this);
+						previousValue.Files.Remove(this);
 					}
 					this._Quote.Entity = value;
 					if ((value != null))
 					{
-						value.Images.Add(this);
+						value.Files.Add(this);
 						this._QuoteID = value.ID;
 					}
 					else
@@ -1851,6 +1904,144 @@ namespace BizzyQuote.Data.Entities
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Manufacturer")]
+	public partial class Manufacturer : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private bool _IsActive;
+		
+		private EntitySet<Material> _Materials;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public Manufacturer()
+		{
+			this._Materials = new EntitySet<Material>(new Action<Material>(this.attach_Materials), new Action<Material>(this.detach_Materials));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Manufacturer_Material", Storage="_Materials", ThisKey="ID", OtherKey="ManufacturerID")]
+		public EntitySet<Material> Materials
+		{
+			get
+			{
+				return this._Materials;
+			}
+			set
+			{
+				this._Materials.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Materials(Material entity)
+		{
+			this.SendPropertyChanging();
+			entity.Manufacturer = this;
+		}
+		
+		private void detach_Materials(Material entity)
+		{
+			this.SendPropertyChanging();
+			entity.Manufacturer = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Material")]
 	public partial class Material : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1875,7 +2066,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private bool _IsActive;
 		
-		private int _SupplierID;
+		private int _ManufacturerID;
 		
 		private System.Nullable<decimal> _Height;
 		
@@ -1895,7 +2086,9 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntitySet<QuoteItem> _QuoteItems;
 		
-		private EntityRef<Supplier> _Supplier;
+		private EntitySet<Pricing> _Pricings;
+		
+		private EntityRef<Manufacturer> _Manufacturer;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1919,8 +2112,8 @@ namespace BizzyQuote.Data.Entities
     partial void OnUnitCostChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
-    partial void OnSupplierIDChanging(int value);
-    partial void OnSupplierIDChanged();
+    partial void OnManufacturerIDChanging(int value);
+    partial void OnManufacturerIDChanged();
     partial void OnHeightChanging(System.Nullable<decimal> value);
     partial void OnHeightChanged();
     partial void OnWidthChanging(System.Nullable<decimal> value);
@@ -1941,7 +2134,8 @@ namespace BizzyQuote.Data.Entities
 		{
 			this._MaterialToProducts = new EntitySet<MaterialToProduct>(new Action<MaterialToProduct>(this.attach_MaterialToProducts), new Action<MaterialToProduct>(this.detach_MaterialToProducts));
 			this._QuoteItems = new EntitySet<QuoteItem>(new Action<QuoteItem>(this.attach_QuoteItems), new Action<QuoteItem>(this.detach_QuoteItems));
-			this._Supplier = default(EntityRef<Supplier>);
+			this._Pricings = new EntitySet<Pricing>(new Action<Pricing>(this.attach_Pricings), new Action<Pricing>(this.detach_Pricings));
+			this._Manufacturer = default(EntityRef<Manufacturer>);
 			OnCreated();
 		}
 		
@@ -2125,26 +2319,26 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupplierID", DbType="Int NOT NULL")]
-		public int SupplierID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManufacturerID", DbType="Int NOT NULL")]
+		public int ManufacturerID
 		{
 			get
 			{
-				return this._SupplierID;
+				return this._ManufacturerID;
 			}
 			set
 			{
-				if ((this._SupplierID != value))
+				if ((this._ManufacturerID != value))
 				{
-					if (this._Supplier.HasLoadedOrAssignedValue)
+					if (this._Manufacturer.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnSupplierIDChanging(value);
+					this.OnManufacturerIDChanging(value);
 					this.SendPropertyChanging();
-					this._SupplierID = value;
-					this.SendPropertyChanged("SupplierID");
-					this.OnSupplierIDChanged();
+					this._ManufacturerID = value;
+					this.SendPropertyChanged("ManufacturerID");
+					this.OnManufacturerIDChanged();
 				}
 			}
 		}
@@ -2315,36 +2509,49 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_Material", Storage="_Supplier", ThisKey="SupplierID", OtherKey="ID", IsForeignKey=true)]
-		public Supplier Supplier
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Material_Pricing", Storage="_Pricings", ThisKey="ID", OtherKey="MaterialID")]
+		public EntitySet<Pricing> Pricings
 		{
 			get
 			{
-				return this._Supplier.Entity;
+				return this._Pricings;
 			}
 			set
 			{
-				Supplier previousValue = this._Supplier.Entity;
+				this._Pricings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Manufacturer_Material", Storage="_Manufacturer", ThisKey="ManufacturerID", OtherKey="ID", IsForeignKey=true)]
+		public Manufacturer Manufacturer
+		{
+			get
+			{
+				return this._Manufacturer.Entity;
+			}
+			set
+			{
+				Manufacturer previousValue = this._Manufacturer.Entity;
 				if (((previousValue != value) 
-							|| (this._Supplier.HasLoadedOrAssignedValue == false)))
+							|| (this._Manufacturer.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Supplier.Entity = null;
+						this._Manufacturer.Entity = null;
 						previousValue.Materials.Remove(this);
 					}
-					this._Supplier.Entity = value;
+					this._Manufacturer.Entity = value;
 					if ((value != null))
 					{
 						value.Materials.Add(this);
-						this._SupplierID = value.ID;
+						this._ManufacturerID = value.ID;
 					}
 					else
 					{
-						this._SupplierID = default(int);
+						this._ManufacturerID = default(int);
 					}
-					this.SendPropertyChanged("Supplier");
+					this.SendPropertyChanged("Manufacturer");
 				}
 			}
 		}
@@ -2388,6 +2595,18 @@ namespace BizzyQuote.Data.Entities
 		}
 		
 		private void detach_QuoteItems(QuoteItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.Material = null;
+		}
+		
+		private void attach_Pricings(Pricing entity)
+		{
+			this.SendPropertyChanging();
+			entity.Material = this;
+		}
+		
+		private void detach_Pricings(Pricing entity)
 		{
 			this.SendPropertyChanging();
 			entity.Material = null;
@@ -2586,371 +2805,6 @@ namespace BizzyQuote.Data.Entities
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PartOfHouse")]
-	public partial class PartOfHouse : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Name;
-		
-		private bool _IsActive;
-		
-		private EntitySet<WasteFactor> _WasteFactors;
-		
-		private EntitySet<ProductToPartOfHouse> _ProductToPartOfHouses;
-		
-		private EntitySet<QuoteItem> _QuoteItems;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    #endregion
-		
-		public PartOfHouse()
-		{
-			this._WasteFactors = new EntitySet<WasteFactor>(new Action<WasteFactor>(this.attach_WasteFactors), new Action<WasteFactor>(this.detach_WasteFactors));
-			this._ProductToPartOfHouses = new EntitySet<ProductToPartOfHouse>(new Action<ProductToPartOfHouse>(this.attach_ProductToPartOfHouses), new Action<ProductToPartOfHouse>(this.detach_ProductToPartOfHouses));
-			this._QuoteItems = new EntitySet<QuoteItem>(new Action<QuoteItem>(this.attach_QuoteItems), new Action<QuoteItem>(this.detach_QuoteItems));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100)")]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_WasteFactor", Storage="_WasteFactors", ThisKey="ID", OtherKey="PartOfHouseID")]
-		public EntitySet<WasteFactor> WasteFactors
-		{
-			get
-			{
-				return this._WasteFactors;
-			}
-			set
-			{
-				this._WasteFactors.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_ProductToPartOfHouse", Storage="_ProductToPartOfHouses", ThisKey="ID", OtherKey="PartOfHouseID")]
-		public EntitySet<ProductToPartOfHouse> ProductToPartOfHouses
-		{
-			get
-			{
-				return this._ProductToPartOfHouses;
-			}
-			set
-			{
-				this._ProductToPartOfHouses.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_QuoteItem", Storage="_QuoteItems", ThisKey="ID", OtherKey="PartOfHouseID")]
-		public EntitySet<QuoteItem> QuoteItems
-		{
-			get
-			{
-				return this._QuoteItems;
-			}
-			set
-			{
-				this._QuoteItems.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_WasteFactors(WasteFactor entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = this;
-		}
-		
-		private void detach_WasteFactors(WasteFactor entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = null;
-		}
-		
-		private void attach_ProductToPartOfHouses(ProductToPartOfHouse entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = this;
-		}
-		
-		private void detach_ProductToPartOfHouses(ProductToPartOfHouse entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = null;
-		}
-		
-		private void attach_QuoteItems(QuoteItem entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = this;
-		}
-		
-		private void detach_QuoteItems(QuoteItem entity)
-		{
-			this.SendPropertyChanging();
-			entity.PartOfHouse = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Pricing")]
-	public partial class Pricing
-	{
-		
-		private int _ID;
-		
-		private int _MaterialID;
-		
-		private System.Nullable<int> _CompanyID;
-		
-		private System.Nullable<int> _SupplierID;
-		
-		private System.Nullable<decimal> _Price;
-		
-		private System.DateTime _CreatedOn;
-		
-		private System.DateTime _ModifiedOn;
-		
-		private string _CreatedBy;
-		
-		private string _ModifiedBy;
-		
-		public Pricing()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this._ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialID", DbType="Int NOT NULL")]
-		public int MaterialID
-		{
-			get
-			{
-				return this._MaterialID;
-			}
-			set
-			{
-				if ((this._MaterialID != value))
-				{
-					this._MaterialID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyID", DbType="Int")]
-		public System.Nullable<int> CompanyID
-		{
-			get
-			{
-				return this._CompanyID;
-			}
-			set
-			{
-				if ((this._CompanyID != value))
-				{
-					this._CompanyID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupplierID", DbType="Int")]
-		public System.Nullable<int> SupplierID
-		{
-			get
-			{
-				return this._SupplierID;
-			}
-			set
-			{
-				if ((this._SupplierID != value))
-				{
-					this._SupplierID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(15,2)")]
-		public System.Nullable<decimal> Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this._Price = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this._CreatedOn = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime ModifiedOn
-		{
-			get
-			{
-				return this._ModifiedOn;
-			}
-			set
-			{
-				if ((this._ModifiedOn != value))
-				{
-					this._ModifiedOn = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="VarChar(50)")]
-		public string CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this._CreatedBy = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="VarChar(50)")]
-		public string ModifiedBy
-		{
-			get
-			{
-				return this._ModifiedBy;
-			}
-			set
-			{
-				if ((this._ModifiedBy != value))
-				{
-					this._ModifiedBy = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product")]
 	public partial class Product : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2975,7 +2829,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntitySet<MaterialToProduct> _MaterialToProducts;
 		
-		private EntitySet<ProductToPartOfHouse> _ProductToPartOfHouses;
+		private EntitySet<ProductToLine> _ProductToLines;
 		
 		private EntitySet<QuoteItem> _QuoteItems;
 		
@@ -3003,7 +2857,7 @@ namespace BizzyQuote.Data.Entities
 		{
 			this._WasteFactors = new EntitySet<WasteFactor>(new Action<WasteFactor>(this.attach_WasteFactors), new Action<WasteFactor>(this.detach_WasteFactors));
 			this._MaterialToProducts = new EntitySet<MaterialToProduct>(new Action<MaterialToProduct>(this.attach_MaterialToProducts), new Action<MaterialToProduct>(this.detach_MaterialToProducts));
-			this._ProductToPartOfHouses = new EntitySet<ProductToPartOfHouse>(new Action<ProductToPartOfHouse>(this.attach_ProductToPartOfHouses), new Action<ProductToPartOfHouse>(this.detach_ProductToPartOfHouses));
+			this._ProductToLines = new EntitySet<ProductToLine>(new Action<ProductToLine>(this.attach_ProductToLines), new Action<ProductToLine>(this.detach_ProductToLines));
 			this._QuoteItems = new EntitySet<QuoteItem>(new Action<QuoteItem>(this.attach_QuoteItems), new Action<QuoteItem>(this.detach_QuoteItems));
 			OnCreated();
 		}
@@ -3174,16 +3028,16 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToPartOfHouse", Storage="_ProductToPartOfHouses", ThisKey="ID", OtherKey="ProductID")]
-		public EntitySet<ProductToPartOfHouse> ProductToPartOfHouses
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToLine", Storage="_ProductToLines", ThisKey="ID", OtherKey="ProductID")]
+		public EntitySet<ProductToLine> ProductToLines
 		{
 			get
 			{
-				return this._ProductToPartOfHouses;
+				return this._ProductToLines;
 			}
 			set
 			{
-				this._ProductToPartOfHouses.Assign(value);
+				this._ProductToLines.Assign(value);
 			}
 		}
 		
@@ -3244,13 +3098,13 @@ namespace BizzyQuote.Data.Entities
 			entity.Product = null;
 		}
 		
-		private void attach_ProductToPartOfHouses(ProductToPartOfHouse entity)
+		private void attach_ProductToLines(ProductToLine entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = this;
 		}
 		
-		private void detach_ProductToPartOfHouses(ProductToPartOfHouse entity)
+		private void detach_ProductToLines(ProductToLine entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
@@ -3269,8 +3123,202 @@ namespace BizzyQuote.Data.Entities
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductToPartOfHouse")]
-	public partial class ProductToPartOfHouse : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductLine")]
+	public partial class ProductLine : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private bool _IsActive;
+		
+		private EntitySet<WasteFactor> _WasteFactors;
+		
+		private EntitySet<ProductToLine> _ProductToLines;
+		
+		private EntitySet<QuoteItem> _QuoteItems;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public ProductLine()
+		{
+			this._WasteFactors = new EntitySet<WasteFactor>(new Action<WasteFactor>(this.attach_WasteFactors), new Action<WasteFactor>(this.detach_WasteFactors));
+			this._ProductToLines = new EntitySet<ProductToLine>(new Action<ProductToLine>(this.attach_ProductToLines), new Action<ProductToLine>(this.detach_ProductToLines));
+			this._QuoteItems = new EntitySet<QuoteItem>(new Action<QuoteItem>(this.attach_QuoteItems), new Action<QuoteItem>(this.detach_QuoteItems));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_WasteFactor", Storage="_WasteFactors", ThisKey="ID", OtherKey="ProductLineID")]
+		public EntitySet<WasteFactor> WasteFactors
+		{
+			get
+			{
+				return this._WasteFactors;
+			}
+			set
+			{
+				this._WasteFactors.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_ProductToLine", Storage="_ProductToLines", ThisKey="ID", OtherKey="ProductLineID")]
+		public EntitySet<ProductToLine> ProductToLines
+		{
+			get
+			{
+				return this._ProductToLines;
+			}
+			set
+			{
+				this._ProductToLines.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_QuoteItem", Storage="_QuoteItems", ThisKey="ID", OtherKey="ProductLineID")]
+		public EntitySet<QuoteItem> QuoteItems
+		{
+			get
+			{
+				return this._QuoteItems;
+			}
+			set
+			{
+				this._QuoteItems.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_WasteFactors(WasteFactor entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = this;
+		}
+		
+		private void detach_WasteFactors(WasteFactor entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = null;
+		}
+		
+		private void attach_ProductToLines(ProductToLine entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = this;
+		}
+		
+		private void detach_ProductToLines(ProductToLine entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = null;
+		}
+		
+		private void attach_QuoteItems(QuoteItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = this;
+		}
+		
+		private void detach_QuoteItems(QuoteItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductLine = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductToLine")]
+	public partial class ProductToLine : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -3279,11 +3327,11 @@ namespace BizzyQuote.Data.Entities
 		
 		private int _ProductID;
 		
-		private int _PartOfHouseID;
+		private int _ProductLineID;
 		
 		private bool _IsActive;
 		
-		private EntityRef<PartOfHouse> _PartOfHouse;
+		private EntityRef<ProductLine> _ProductLine;
 		
 		private EntityRef<Product> _Product;
 		
@@ -3295,15 +3343,15 @@ namespace BizzyQuote.Data.Entities
     partial void OnIDChanged();
     partial void OnProductIDChanging(int value);
     partial void OnProductIDChanged();
-    partial void OnPartOfHouseIDChanging(int value);
-    partial void OnPartOfHouseIDChanged();
+    partial void OnProductLineIDChanging(int value);
+    partial void OnProductLineIDChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
     #endregion
 		
-		public ProductToPartOfHouse()
+		public ProductToLine()
 		{
-			this._PartOfHouse = default(EntityRef<PartOfHouse>);
+			this._ProductLine = default(EntityRef<ProductLine>);
 			this._Product = default(EntityRef<Product>);
 			OnCreated();
 		}
@@ -3352,31 +3400,31 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartOfHouseID", DbType="Int NOT NULL")]
-		public int PartOfHouseID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductLineID", DbType="Int NOT NULL")]
+		public int ProductLineID
 		{
 			get
 			{
-				return this._PartOfHouseID;
+				return this._ProductLineID;
 			}
 			set
 			{
-				if ((this._PartOfHouseID != value))
+				if ((this._ProductLineID != value))
 				{
-					if (this._PartOfHouse.HasLoadedOrAssignedValue)
+					if (this._ProductLine.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnPartOfHouseIDChanging(value);
+					this.OnProductLineIDChanging(value);
 					this.SendPropertyChanging();
-					this._PartOfHouseID = value;
-					this.SendPropertyChanged("PartOfHouseID");
-					this.OnPartOfHouseIDChanged();
+					this._ProductLineID = value;
+					this.SendPropertyChanged("ProductLineID");
+					this.OnProductLineIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="bit")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
 		public bool IsActive
 		{
 			get
@@ -3396,41 +3444,41 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_ProductToPartOfHouse", Storage="_PartOfHouse", ThisKey="PartOfHouseID", OtherKey="ID", IsForeignKey=true)]
-		public PartOfHouse PartOfHouse
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_ProductToLine", Storage="_ProductLine", ThisKey="ProductLineID", OtherKey="ID", IsForeignKey=true)]
+		public ProductLine ProductLine
 		{
 			get
 			{
-				return this._PartOfHouse.Entity;
+				return this._ProductLine.Entity;
 			}
 			set
 			{
-				PartOfHouse previousValue = this._PartOfHouse.Entity;
+				ProductLine previousValue = this._ProductLine.Entity;
 				if (((previousValue != value) 
-							|| (this._PartOfHouse.HasLoadedOrAssignedValue == false)))
+							|| (this._ProductLine.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._PartOfHouse.Entity = null;
-						previousValue.ProductToPartOfHouses.Remove(this);
+						this._ProductLine.Entity = null;
+						previousValue.ProductToLines.Remove(this);
 					}
-					this._PartOfHouse.Entity = value;
+					this._ProductLine.Entity = value;
 					if ((value != null))
 					{
-						value.ProductToPartOfHouses.Add(this);
-						this._PartOfHouseID = value.ID;
+						value.ProductToLines.Add(this);
+						this._ProductLineID = value.ID;
 					}
 					else
 					{
-						this._PartOfHouseID = default(int);
+						this._ProductLineID = default(int);
 					}
-					this.SendPropertyChanged("PartOfHouse");
+					this.SendPropertyChanged("ProductLine");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToPartOfHouse", Storage="_Product", ThisKey="ProductID", OtherKey="ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToLine", Storage="_Product", ThisKey="ProductID", OtherKey="ID", IsForeignKey=true)]
 		public Product Product
 		{
 			get
@@ -3447,12 +3495,12 @@ namespace BizzyQuote.Data.Entities
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.ProductToPartOfHouses.Remove(this);
+						previousValue.ProductToLines.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.ProductToPartOfHouses.Add(this);
+						value.ProductToLines.Add(this);
 						this._ProductID = value.ID;
 					}
 					else
@@ -3515,9 +3563,11 @@ namespace BizzyQuote.Data.Entities
 		
 		private bool _IsActive;
 		
-		private EntitySet<Image> _Images;
+		private EntitySet<File> _Files;
 		
 		private EntitySet<QuoteItem> _QuoteItems;
+		
+		private EntitySet<QuoteOption> _QuoteOptions;
 		
 		private EntityRef<Company> _Company;
 		
@@ -3555,8 +3605,9 @@ namespace BizzyQuote.Data.Entities
 		
 		public Quote()
 		{
-			this._Images = new EntitySet<Image>(new Action<Image>(this.attach_Images), new Action<Image>(this.detach_Images));
+			this._Files = new EntitySet<File>(new Action<File>(this.attach_Files), new Action<File>(this.detach_Files));
 			this._QuoteItems = new EntitySet<QuoteItem>(new Action<QuoteItem>(this.attach_QuoteItems), new Action<QuoteItem>(this.detach_QuoteItems));
+			this._QuoteOptions = new EntitySet<QuoteOption>(new Action<QuoteOption>(this.attach_QuoteOptions), new Action<QuoteOption>(this.detach_QuoteOptions));
 			this._Company = default(EntityRef<Company>);
 			this._User = default(EntityRef<User>);
 			OnCreated();
@@ -3810,16 +3861,16 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_Image", Storage="_Images", ThisKey="ID", OtherKey="QuoteID")]
-		public EntitySet<Image> Images
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_File", Storage="_Files", ThisKey="ID", OtherKey="QuoteID")]
+		public EntitySet<File> Files
 		{
 			get
 			{
-				return this._Images;
+				return this._Files;
 			}
 			set
 			{
-				this._Images.Assign(value);
+				this._Files.Assign(value);
 			}
 		}
 		
@@ -3833,6 +3884,19 @@ namespace BizzyQuote.Data.Entities
 			set
 			{
 				this._QuoteItems.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_QuoteOption", Storage="_QuoteOptions", ThisKey="ID", OtherKey="QuoteID")]
+		public EntitySet<QuoteOption> QuoteOptions
+		{
+			get
+			{
+				return this._QuoteOptions;
+			}
+			set
+			{
+				this._QuoteOptions.Assign(value);
 			}
 		}
 		
@@ -3924,13 +3988,13 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		private void attach_Images(Image entity)
+		private void attach_Files(File entity)
 		{
 			this.SendPropertyChanging();
 			entity.Quote = this;
 		}
 		
-		private void detach_Images(Image entity)
+		private void detach_Files(File entity)
 		{
 			this.SendPropertyChanging();
 			entity.Quote = null;
@@ -3947,6 +4011,18 @@ namespace BizzyQuote.Data.Entities
 			this.SendPropertyChanging();
 			entity.Quote = null;
 		}
+		
+		private void attach_QuoteOptions(QuoteOption entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quote = this;
+		}
+		
+		private void detach_QuoteOptions(QuoteOption entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quote = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuoteItem")]
@@ -3959,13 +4035,13 @@ namespace BizzyQuote.Data.Entities
 		
 		private int _QuoteID;
 		
-		private int _ProductID;
+		private System.Nullable<int> _ProductID;
 		
 		private global::BizzyQuote.Data.Enums.Measurement _Measurement;
 		
 		private System.Nullable<int> _MaterialID;
 		
-		private System.Nullable<int> _PartOfHouseID;
+		private System.Nullable<int> _ProductLineID;
 		
 		private System.Nullable<decimal> _Height;
 		
@@ -3983,7 +4059,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntityRef<Product> _Product;
 		
-		private EntityRef<PartOfHouse> _PartOfHouse;
+		private EntityRef<ProductLine> _ProductLine;
 		
 		private EntityRef<Quote> _Quote;
 		
@@ -3995,14 +4071,14 @@ namespace BizzyQuote.Data.Entities
     partial void OnIDChanged();
     partial void OnQuoteIDChanging(int value);
     partial void OnQuoteIDChanged();
-    partial void OnProductIDChanging(int value);
+    partial void OnProductIDChanging(System.Nullable<int> value);
     partial void OnProductIDChanged();
     partial void OnMeasurementChanging(global::BizzyQuote.Data.Enums.Measurement value);
     partial void OnMeasurementChanged();
     partial void OnMaterialIDChanging(System.Nullable<int> value);
     partial void OnMaterialIDChanged();
-    partial void OnPartOfHouseIDChanging(System.Nullable<int> value);
-    partial void OnPartOfHouseIDChanged();
+    partial void OnProductLineIDChanging(System.Nullable<int> value);
+    partial void OnProductLineIDChanged();
     partial void OnHeightChanging(System.Nullable<decimal> value);
     partial void OnHeightChanged();
     partial void OnWidthChanging(System.Nullable<decimal> value);
@@ -4021,7 +4097,7 @@ namespace BizzyQuote.Data.Entities
 		{
 			this._Material = default(EntityRef<Material>);
 			this._Product = default(EntityRef<Product>);
-			this._PartOfHouse = default(EntityRef<PartOfHouse>);
+			this._ProductLine = default(EntityRef<ProductLine>);
 			this._Quote = default(EntityRef<Quote>);
 			OnCreated();
 		}
@@ -4070,8 +4146,8 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
-		public int ProductID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int")]
+		public System.Nullable<int> ProductID
 		{
 			get
 			{
@@ -4138,26 +4214,26 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartOfHouseID", DbType="Int")]
-		public System.Nullable<int> PartOfHouseID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductLineID", DbType="Int")]
+		public System.Nullable<int> ProductLineID
 		{
 			get
 			{
-				return this._PartOfHouseID;
+				return this._ProductLineID;
 			}
 			set
 			{
-				if ((this._PartOfHouseID != value))
+				if ((this._ProductLineID != value))
 				{
-					if (this._PartOfHouse.HasLoadedOrAssignedValue)
+					if (this._ProductLine.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnPartOfHouseIDChanging(value);
+					this.OnProductLineIDChanging(value);
 					this.SendPropertyChanging();
-					this._PartOfHouseID = value;
-					this.SendPropertyChanged("PartOfHouseID");
-					this.OnPartOfHouseIDChanged();
+					this._ProductLineID = value;
+					this.SendPropertyChanged("ProductLineID");
+					this.OnProductLineIDChanged();
 				}
 			}
 		}
@@ -4343,43 +4419,43 @@ namespace BizzyQuote.Data.Entities
 					}
 					else
 					{
-						this._ProductID = default(int);
+						this._ProductID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PartOfHouse_QuoteItem", Storage="_PartOfHouse", ThisKey="PartOfHouseID", OtherKey="ID", IsForeignKey=true)]
-		public PartOfHouse PartOfHouse
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductLine_QuoteItem", Storage="_ProductLine", ThisKey="ProductLineID", OtherKey="ID", IsForeignKey=true)]
+		public ProductLine ProductLine
 		{
 			get
 			{
-				return this._PartOfHouse.Entity;
+				return this._ProductLine.Entity;
 			}
 			set
 			{
-				PartOfHouse previousValue = this._PartOfHouse.Entity;
+				ProductLine previousValue = this._ProductLine.Entity;
 				if (((previousValue != value) 
-							|| (this._PartOfHouse.HasLoadedOrAssignedValue == false)))
+							|| (this._ProductLine.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._PartOfHouse.Entity = null;
+						this._ProductLine.Entity = null;
 						previousValue.QuoteItems.Remove(this);
 					}
-					this._PartOfHouse.Entity = value;
+					this._ProductLine.Entity = value;
 					if ((value != null))
 					{
 						value.QuoteItems.Add(this);
-						this._PartOfHouseID = value.ID;
+						this._ProductLineID = value.ID;
 					}
 					else
 					{
-						this._PartOfHouseID = default(Nullable<int>);
+						this._ProductLineID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("PartOfHouse");
+					this.SendPropertyChanged("ProductLine");
 				}
 			}
 		}
@@ -4439,6 +4515,229 @@ namespace BizzyQuote.Data.Entities
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuoteOptions")]
+	public partial class QuoteOption : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _QuoteID;
+		
+		private global::BizzyQuote.Data.Enums.TableName _TableName;
+		
+		private System.Nullable<int> _ForeignKey;
+		
+		private global::BizzyQuote.Data.Enums.QuoteOptionCategory _ContentCategory;
+		
+		private System.Nullable<int> _SecondaryKey;
+		
+		private EntityRef<Quote> _Quote;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnQuoteIDChanging(int value);
+    partial void OnQuoteIDChanged();
+    partial void OnTableNameChanging(global::BizzyQuote.Data.Enums.TableName value);
+    partial void OnTableNameChanged();
+    partial void OnForeignKeyChanging(System.Nullable<int> value);
+    partial void OnForeignKeyChanged();
+    partial void OnContentCategoryChanging(global::BizzyQuote.Data.Enums.QuoteOptionCategory value);
+    partial void OnContentCategoryChanged();
+    partial void OnSecondaryKeyChanging(System.Nullable<int> value);
+    partial void OnSecondaryKeyChanged();
+    #endregion
+		
+		public QuoteOption()
+		{
+			this._Quote = default(EntityRef<Quote>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuoteID", DbType="Int NOT NULL")]
+		public int QuoteID
+		{
+			get
+			{
+				return this._QuoteID;
+			}
+			set
+			{
+				if ((this._QuoteID != value))
+				{
+					if (this._Quote.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuoteIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuoteID = value;
+					this.SendPropertyChanged("QuoteID");
+					this.OnQuoteIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TableName", DbType="Int", CanBeNull=true)]
+		public global::BizzyQuote.Data.Enums.TableName TableName
+		{
+			get
+			{
+				return this._TableName;
+			}
+			set
+			{
+				if ((this._TableName != value))
+				{
+					this.OnTableNameChanging(value);
+					this.SendPropertyChanging();
+					this._TableName = value;
+					this.SendPropertyChanged("TableName");
+					this.OnTableNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForeignKey", DbType="Int")]
+		public System.Nullable<int> ForeignKey
+		{
+			get
+			{
+				return this._ForeignKey;
+			}
+			set
+			{
+				if ((this._ForeignKey != value))
+				{
+					this.OnForeignKeyChanging(value);
+					this.SendPropertyChanging();
+					this._ForeignKey = value;
+					this.SendPropertyChanged("ForeignKey");
+					this.OnForeignKeyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContentCategory", DbType="Int", CanBeNull=true)]
+		public global::BizzyQuote.Data.Enums.QuoteOptionCategory ContentCategory
+		{
+			get
+			{
+				return this._ContentCategory;
+			}
+			set
+			{
+				if ((this._ContentCategory != value))
+				{
+					this.OnContentCategoryChanging(value);
+					this.SendPropertyChanging();
+					this._ContentCategory = value;
+					this.SendPropertyChanged("ContentCategory");
+					this.OnContentCategoryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecondaryKey", DbType="Int")]
+		public System.Nullable<int> SecondaryKey
+		{
+			get
+			{
+				return this._SecondaryKey;
+			}
+			set
+			{
+				if ((this._SecondaryKey != value))
+				{
+					this.OnSecondaryKeyChanging(value);
+					this.SendPropertyChanging();
+					this._SecondaryKey = value;
+					this.SendPropertyChanged("SecondaryKey");
+					this.OnSecondaryKeyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quote_QuoteOption", Storage="_Quote", ThisKey="QuoteID", OtherKey="ID", IsForeignKey=true)]
+		public Quote Quote
+		{
+			get
+			{
+				return this._Quote.Entity;
+			}
+			set
+			{
+				Quote previousValue = this._Quote.Entity;
+				if (((previousValue != value) 
+							|| (this._Quote.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Quote.Entity = null;
+						previousValue.QuoteOptions.Remove(this);
+					}
+					this._Quote.Entity = value;
+					if ((value != null))
+					{
+						value.QuoteOptions.Add(this);
+						this._QuoteID = value.ID;
+					}
+					else
+					{
+						this._QuoteID = default(int);
+					}
+					this.SendPropertyChanged("Quote");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Supplier")]
 	public partial class Supplier : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -4457,7 +4756,7 @@ namespace BizzyQuote.Data.Entities
 		
 		private EntitySet<CompanyToSupplier> _CompanyToSuppliers;
 		
-		private EntitySet<Material> _Materials;
+		private EntitySet<Pricing> _Pricings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4478,7 +4777,7 @@ namespace BizzyQuote.Data.Entities
 		public Supplier()
 		{
 			this._CompanyToSuppliers = new EntitySet<CompanyToSupplier>(new Action<CompanyToSupplier>(this.attach_CompanyToSuppliers), new Action<CompanyToSupplier>(this.detach_CompanyToSuppliers));
-			this._Materials = new EntitySet<Material>(new Action<Material>(this.attach_Materials), new Action<Material>(this.detach_Materials));
+			this._Pricings = new EntitySet<Pricing>(new Action<Pricing>(this.attach_Pricings), new Action<Pricing>(this.detach_Pricings));
 			OnCreated();
 		}
 		
@@ -4595,16 +4894,16 @@ namespace BizzyQuote.Data.Entities
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_Material", Storage="_Materials", ThisKey="ID", OtherKey="SupplierID")]
-		public EntitySet<Material> Materials
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_Pricing", Storage="_Pricings", ThisKey="ID", OtherKey="SupplierID")]
+		public EntitySet<Pricing> Pricings
 		{
 			get
 			{
-				return this._Materials;
+				return this._Pricings;
 			}
 			set
 			{
-				this._Materials.Assign(value);
+				this._Pricings.Assign(value);
 			}
 		}
 		
@@ -4640,13 +4939,13 @@ namespace BizzyQuote.Data.Entities
 			entity.Supplier = null;
 		}
 		
-		private void attach_Materials(Material entity)
+		private void attach_Pricings(Pricing entity)
 		{
 			this.SendPropertyChanging();
 			entity.Supplier = this;
 		}
 		
-		private void detach_Materials(Material entity)
+		private void detach_Pricings(Pricing entity)
 		{
 			this.SendPropertyChanging();
 			entity.Supplier = null;
@@ -5021,6 +5320,383 @@ namespace BizzyQuote.Data.Entities
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Pricing")]
+	public partial class Pricing : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _MaterialID;
+		
+		private System.Nullable<int> _CompanyID;
+		
+		private System.Nullable<int> _SupplierID;
+		
+		private System.Nullable<decimal> _Price;
+		
+		private System.DateTime _CreatedOn;
+		
+		private System.DateTime _ModifiedOn;
+		
+		private string _CreatedBy;
+		
+		private string _ModifiedBy;
+		
+		private EntityRef<Company> _Company;
+		
+		private EntityRef<Material> _Material;
+		
+		private EntityRef<Supplier> _Supplier;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnMaterialIDChanging(int value);
+    partial void OnMaterialIDChanged();
+    partial void OnCompanyIDChanging(System.Nullable<int> value);
+    partial void OnCompanyIDChanged();
+    partial void OnSupplierIDChanging(System.Nullable<int> value);
+    partial void OnSupplierIDChanged();
+    partial void OnPriceChanging(System.Nullable<decimal> value);
+    partial void OnPriceChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnModifiedOnChanging(System.DateTime value);
+    partial void OnModifiedOnChanged();
+    partial void OnCreatedByChanging(string value);
+    partial void OnCreatedByChanged();
+    partial void OnModifiedByChanging(string value);
+    partial void OnModifiedByChanged();
+    #endregion
+		
+		public Pricing()
+		{
+			this._Company = default(EntityRef<Company>);
+			this._Material = default(EntityRef<Material>);
+			this._Supplier = default(EntityRef<Supplier>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialID", DbType="Int NOT NULL")]
+		public int MaterialID
+		{
+			get
+			{
+				return this._MaterialID;
+			}
+			set
+			{
+				if ((this._MaterialID != value))
+				{
+					if (this._Material.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMaterialIDChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialID = value;
+					this.SendPropertyChanged("MaterialID");
+					this.OnMaterialIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyID", DbType="Int")]
+		public System.Nullable<int> CompanyID
+		{
+			get
+			{
+				return this._CompanyID;
+			}
+			set
+			{
+				if ((this._CompanyID != value))
+				{
+					if (this._Company.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCompanyIDChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyID = value;
+					this.SendPropertyChanged("CompanyID");
+					this.OnCompanyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupplierID", DbType="Int")]
+		public System.Nullable<int> SupplierID
+		{
+			get
+			{
+				return this._SupplierID;
+			}
+			set
+			{
+				if ((this._SupplierID != value))
+				{
+					if (this._Supplier.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSupplierIDChanging(value);
+					this.SendPropertyChanging();
+					this._SupplierID = value;
+					this.SendPropertyChanged("SupplierID");
+					this.OnSupplierIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(15,2)")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this.OnModifiedOnChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedOn = value;
+					this.SendPropertyChanged("ModifiedOn");
+					this.OnModifiedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="VarChar(50)")]
+		public string CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="VarChar(50)")]
+		public string ModifiedBy
+		{
+			get
+			{
+				return this._ModifiedBy;
+			}
+			set
+			{
+				if ((this._ModifiedBy != value))
+				{
+					this.OnModifiedByChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedBy = value;
+					this.SendPropertyChanged("ModifiedBy");
+					this.OnModifiedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_Pricing", Storage="_Company", ThisKey="CompanyID", OtherKey="ID", IsForeignKey=true)]
+		public Company Company
+		{
+			get
+			{
+				return this._Company.Entity;
+			}
+			set
+			{
+				Company previousValue = this._Company.Entity;
+				if (((previousValue != value) 
+							|| (this._Company.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Company.Entity = null;
+						previousValue.Pricings.Remove(this);
+					}
+					this._Company.Entity = value;
+					if ((value != null))
+					{
+						value.Pricings.Add(this);
+						this._CompanyID = value.ID;
+					}
+					else
+					{
+						this._CompanyID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Company");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Material_Pricing", Storage="_Material", ThisKey="MaterialID", OtherKey="ID", IsForeignKey=true)]
+		public Material Material
+		{
+			get
+			{
+				return this._Material.Entity;
+			}
+			set
+			{
+				Material previousValue = this._Material.Entity;
+				if (((previousValue != value) 
+							|| (this._Material.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Material.Entity = null;
+						previousValue.Pricings.Remove(this);
+					}
+					this._Material.Entity = value;
+					if ((value != null))
+					{
+						value.Pricings.Add(this);
+						this._MaterialID = value.ID;
+					}
+					else
+					{
+						this._MaterialID = default(int);
+					}
+					this.SendPropertyChanged("Material");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_Pricing", Storage="_Supplier", ThisKey="SupplierID", OtherKey="ID", IsForeignKey=true)]
+		public Supplier Supplier
+		{
+			get
+			{
+				return this._Supplier.Entity;
+			}
+			set
+			{
+				Supplier previousValue = this._Supplier.Entity;
+				if (((previousValue != value) 
+							|| (this._Supplier.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Supplier.Entity = null;
+						previousValue.Pricings.Remove(this);
+					}
+					this._Supplier.Entity = value;
+					if ((value != null))
+					{
+						value.Pricings.Add(this);
+						this._SupplierID = value.ID;
+					}
+					else
+					{
+						this._SupplierID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Supplier");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

@@ -7,7 +7,15 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<section class="contact">
+<aside>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Pricing", "Pricing", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+</aside>
+@*<section class="contact">
     <header>
         <h3>Phone</h3>
     </header>
@@ -19,7 +27,7 @@
         <span class="label">Sales:</span>
         <span>303.408.8160</span>
     </p>
-</section>
+</section>*@
 
 <section class="contact">
     <header>
@@ -48,3 +56,4 @@
         Denver, CO 80209
     </p>
 </section>
+

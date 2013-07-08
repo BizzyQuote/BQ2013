@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Braintree-2.23.1">
+      <HintPath>..\packages\Braintree.2.23.1\lib\Braintree-2.23.1.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -113,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\MailerTest.cs" />
     <Compile Include="Managers\CompanyManagerTests.cs" />
     <Compile Include="Managers\MaterialsManagerTests.cs" />
     <Compile Include="Managers\QuoteManagerTests.cs" />
@@ -127,6 +131,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BizzyQuote.Core\BizzyQuote.Core.csproj">
+      <Project>{bd36c605-5545-4b2f-a7d7-b79d9ac27279}</Project>
+      <Name>BizzyQuote.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BizzyQuote.Data\BizzyQuote.Data.csproj">
       <Project>{B8118EA1-67CF-4D07-8B3A-958260CBDF31}</Project>
       <Name>BizzyQuote.Data</Name>

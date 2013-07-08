@@ -638,6 +638,10 @@ tr.pager td {
     text-align: right;
 }
 
+.bizzy-table .quote-textbox {
+    width: 100px;
+}
+
 
 /********************
 *   Mobile Styles   *

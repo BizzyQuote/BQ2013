@@ -1,9 +1,9 @@
-﻿@model BizzyQuote.Models.ProductToPartOfHouseModel
+﻿@model BizzyQuote.Models.ProductToProductLineModel
 
 <tr>
     @Html.Hidden("ProductID", Model.ProductID)
-    @Html.Hidden("PartOfHouseID", Model.PartOfHouseID)
-    <td>@Model.PartOfHouseName</td>
+    @Html.Hidden("ProductLineID", Model.ProductLineID)
+    <td>@Model.ProductLineName</td>
     <td>@Model.ProductName</td>
     <td>@Html.EditorFor(model => model.IsActive)</td>
 </tr>

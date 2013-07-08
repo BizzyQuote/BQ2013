@@ -10,17 +10,34 @@ namespace BizzyQuote.Models
     public class ProductHouseModel
     {
         public IEnumerable<Product> Products { get; set; }
-        public IEnumerable<PartOfHouse> PartsOfHouse { get; set; }
-        public IEnumerable<ProductToPartOfHouseModel> ProductPartHouse { get; set; }
+        public IEnumerable<ProductLine> PartsOfHouse { get; set; }
+        public IEnumerable<ProductToProductLineModel> ProductPartHouse { get; set; }
     }
 
-    public class ProductToPartOfHouseModel
+    public class ProductToProductLineModel
     {
         public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public int PartOfHouseID { get; set; }
-        public string PartOfHouseName { get; set; }
-        public int ProductPartOfHouseID { get; set; }
+        public int ProductLineID { get; set; }
+        public string ProductLineName { get; set; }
+        public int ProductProductLineID { get; set; }
         public bool IsActive { get; set; }
+    }
+
+    public class MaterialToProductModel
+    {
+        public int MaterialToProductID { get; set; }
+        public int ProductID { get; set; }
+        public int MaterialID { get; set; }
+        public string ProductName { get; set; }
+        public string MaterialName { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+    public class MaterialProductGridModel
+    {
+        public IEnumerable<MaterialToProductModel> MaterialProducts { get; set; }
+        public IEnumerable<Material> Materials { get; set; }
+        public IEnumerable<Product> Products { get; set; }
     }
 }

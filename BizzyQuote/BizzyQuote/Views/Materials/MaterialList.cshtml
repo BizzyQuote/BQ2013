@@ -13,28 +13,24 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Subname</th>
-            <th>Unit Size</th>
             <th>Unit Cost</th>
             <th>Measurement</th>
             <th>Active</th>
             <th>Created</th>
-            <th>Modified</th>
             <th>Products</th>
+            <th>Clone</th>
         </tr>
     </thead>
     @foreach (Material material in ViewBag.Materials)
     {
         <tr>
             <td>@Html.ActionLink(material.Name, "EditMaterial", new {id = material.ID})</td>
-            <td>@material.SubName</td>
-            <td>@material.UnitSize</td>
             <td>@material.UnitCost</td>
             <td>@material.Measurement.ToString()</td>
             <td>@material.IsActive.ToString()</td>
             <td>@material.CreatedOn.ToShortDateString()</td>
-            <td> @material.ModifiedOn.ToShortDateString()</td>
-            <td>@Html.ActionLink("Products", "AvailableProducts", new { materialID = material.ID })</td>
+            <td>@Html.ActionLink("Products", "MaterialProductsGrid", new { supplierID = material.ManufacturerID })</td>
+            <td>@Html.ActionLink("Clone", "Clone", new { id = material.ID })</td>
         </tr>
     }
 </table>

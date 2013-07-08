@@ -1,0 +1,16 @@
+﻿@model BizzyQuote.Models.MaterialToProductModel
+
+<tr>
+    <td>
+        @Model.MaterialName
+    </td>
+    <td>
+        @Model.ProductName
+    </td>
+    <td>
+        @Html.Hidden("MaterialToProductID", Model.MaterialToProductID)
+        @Html.Hidden("ProductID", Model.ProductID)
+        @Html.Hidden("MaterialID", Model.MaterialID)
+        @Html.EditorFor(model => model.IsActive)
+    </td>
+</tr>

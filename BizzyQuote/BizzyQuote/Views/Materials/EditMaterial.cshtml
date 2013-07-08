@@ -1,5 +1,6 @@
 ﻿@using BizzyQuote.Data.Entities
 @using BizzyQuote.Data.Enums
+@model BizzyQuote.Models.MaterialModel
 @{
     ViewBag.Title = "Material Details";
 }
@@ -9,42 +10,55 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary()
 
-    Material material = ViewBag.Material;
-    
     <fieldset>
         <legend>Material Details</legend>
         <ol>
-            <li class="display-label">Material Name</li>
-            <li class="display-field">@Html.TextBox("Name", material.Name)</li>
-            <li class="display-label">Material Subname</li>
-            <li class="display-field">@Html.TextBox("Subname", material.SubName)</li>
-            <li class="display-label">Material UnitSize</li>
-            <li class="display-field">@Html.TextBox("UnitSize", material.UnitSize)</li>
-            <li class="display-label">Material Unit Cost</li>
-            <li class="display-field">@Html.TextBox("UnitCost", material.UnitCost)</li>
-            <li class="display-label">Measurement</li>
-            <li class="display-field">@Html.DropDownList("Measurement", Enum.GetValues(typeof(Measurement)).Cast<Measurement>().Select(x => new SelectListItem { Selected = (x == material.Measurement), Text = x.ToString(), Value = x.ToString() }))</li>
-            <li class="display-label">Height</li>
-            <li class="display-field">@Html.TextBox("Height", material.Height)</li>
-            <li class="display-label">Width</li>
-            <li class="display-field">@Html.TextBox("Width", material.Width)</li>
-            <li class="display-label">Thickness</li>
-            <li class="display-field">@Html.TextBox("Thickness", material.Thickness)</li>
-            <li class="display-label">Texture</li>
-            <li class="display-field">@Html.TextBox("Texture", material.Texture)</li>
-            <li class="display-label">Finish</li>
-            <li class="display-field">@Html.TextBox("Finish", material.Finish)</li>
-            <li class="display-label">Overlap</li>
-            <li class="display-field">@Html.TextBox("Overlap", material.Overlap)</li>
-            <li class="display-label">SKU</li>
-            <li class="display-field">@Html.TextBox("SKU", material.SKU)</li>
-            <li class="display-label">Active</li>
-            <li class="display-field">@Html.CheckBox("IsActive", material.IsActive)</li>
-            @Html.Hidden("CreatedOn", material.CreatedOn)
-            @Html.Hidden("ModifiedOn", material.ModifiedOn)
-            @Html.Hidden("SupplierID", material.SupplierID)
+            <li class="display-label">@Html.LabelFor(m => m.Name)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Name)</li>
+
+            <li class="display-label">@Html.LabelFor(m => m.SubName)</li>
+            <li class="display-field">@Html.EditorFor(m => m.SubName)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.UnitCost)</li>
+            <li class="display-field">@Html.EditorFor(m => m.UnitCost)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Measurement)</li>
+            <li class="display-field">@Html.DropDownList("Measurement", Model.MeasurementList)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Height)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Height)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Width)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Width)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Thickness)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Thickness)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Texture)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Texture)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Finish)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Finish)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.Overlap)</li>
+            <li class="display-field">@Html.EditorFor(m => m.Overlap)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.SKU)</li>
+            <li class="display-field">@Html.EditorFor(m => m.SKU)</li>
+            
+            <li class="display-label">@Html.LabelFor(m => m.IsActive)</li>
+            <li class="display-field">@Html.EditorFor(m => m.IsActive)</li>
+            
+            @Html.HiddenFor(m => m.CreatedOn)
+            @Html.HiddenFor(m => m.ModifiedOn)
+            @Html.HiddenFor(m => m.ManufacturerID)
+            @Html.HiddenFor(m => m.ID)
         </ol>
         <input type="submit" value="Save" />
     </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
 

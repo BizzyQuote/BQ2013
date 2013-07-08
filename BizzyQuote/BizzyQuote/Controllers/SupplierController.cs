@@ -13,7 +13,7 @@ namespace BizzyQuote.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult List()
@@ -68,12 +68,12 @@ namespace BizzyQuote.Controllers
         public ActionResult Products()
         {
             ProductHouseModel model = new ProductHouseModel();
-            List<ProductToPartOfHouseModel> phModel = new List<ProductToPartOfHouseModel>();
+            List<ProductToProductLineModel> phModel = new List<ProductToProductLineModel>();
             using (var mm = new MaterialsManager())
             {
                 List<Product> products = mm.ActiveProducts().ToList();
-                List<PartOfHouse> partsOfHouse = mm.ActivePartsOfHouse().ToList();
-                List<ProductToPartOfHouse> prodHouses = mm.AllProductToPartOfHouse().ToList();
+                List<ProductLine> partsOfHouse = mm.ActivePartsOfHouse().ToList();
+                List<ProductToLine> prodHouses = mm.AllProductToProductLine().ToList();
 
                 model.Products = products.AsEnumerable();
                 model.PartsOfHouse = partsOfHouse.AsEnumerable();
@@ -83,13 +83,13 @@ namespace BizzyQuote.Controllers
                 {
                     foreach (var product in products)
                     {
-                        phModel.Add(new ProductToPartOfHouseModel
+                        phModel.Add(new ProductToProductLineModel
                         {
-                            IsActive = prodHouses.Any(ph => ph.ProductID == product.ID && ph.PartOfHouseID == partOfHouse.ID) && prodHouses.First(ph => ph.ProductID == product.ID && ph.PartOfHouseID == partOfHouse.ID).IsActive,
+                            IsActive = prodHouses.Any(ph => ph.ProductID == product.ID && ph.ProductLineID == partOfHouse.ID) && prodHouses.First(ph => ph.ProductID == product.ID && ph.ProductLineID == partOfHouse.ID).IsActive,
                             ProductID = product.ID,
-                            PartOfHouseID = partOfHouse.ID,
+                            ProductLineID = partOfHouse.ID,
                             ProductName = product.Name,
-                            PartOfHouseName = partOfHouse.Name
+                            ProductLineName = partOfHouse.Name
                         });
                     }
                 }
@@ -101,18 +101,18 @@ namespace BizzyQuote.Controllers
         [HttpPost]
         public ActionResult Products(ProductHouseModel model)
         {
-            List<ProductToPartOfHouse> parts = new List<ProductToPartOfHouse>();
+            List<ProductToLine> parts = new List<ProductToLine>();
             // loop through to create a list and then save
             foreach (var part in model.ProductPartHouse.Where(m => m.IsActive))
             {
-                parts.Add(new ProductToPartOfHouse { IsActive = true, PartOfHouseID = part.PartOfHouseID, ProductID = part.ProductID});
+                parts.Add(new ProductToLine { IsActive = true, ProductLineID = part.ProductLineID, ProductID = part.ProductID});
             }
 
             // first delete all of the existing ones 
             using (var mm = new MaterialsManager())
             {
-                mm.DeleteProductToPartOfHouse();
-                mm.CreateProductToPartOfHouse(parts);
+                mm.DeleteProductToProductLine();
+                mm.CreateProductToProductLine(parts);
             }
 
             return RedirectToAction("Index", "Home");
