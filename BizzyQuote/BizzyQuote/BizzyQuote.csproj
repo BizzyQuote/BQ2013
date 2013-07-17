@@ -203,6 +203,7 @@
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PricingModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\QuoteModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +350,9 @@
     <Content Include="Views\Materials\EditorTemplates\MaterialToProductModel.cshtml" />
     <Content Include="Views\Pricing\PricingList.cshtml" />
     <Content Include="Views\Pricing\EditorTemplates\PricingModel.cshtml" />
+    <Content Include="Views\Quotes\Options.cshtml" />
+    <Content Include="Views\Quotes\EditorTemplates\ProductLineSelectionModel.cshtml" />
+    <Content Include="Views\Quotes\EditorTemplates\ManufacturerSelectionModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

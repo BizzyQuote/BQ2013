@@ -72,7 +72,7 @@ namespace BizzyQuote.Controllers
             using (var mm = new MaterialsManager())
             {
                 List<Product> products = mm.ActiveProducts().ToList();
-                List<ProductLine> partsOfHouse = mm.ActivePartsOfHouse().ToList();
+                List<ProductLine> partsOfHouse = mm.ActiveProductLines().ToList();
                 List<ProductToLine> prodHouses = mm.AllProductToProductLine().ToList();
 
                 model.Products = products.AsEnumerable();

@@ -164,7 +164,7 @@ namespace BizzyQuote.Data.Managers
             return partOfHouse;
         }
 
-        public IEnumerable<ProductLine> ActivePartsOfHouse()
+        public IEnumerable<ProductLine> ActiveProductLines()
         {
             return db.ProductLines.Where(ph => ph.IsActive);
         }

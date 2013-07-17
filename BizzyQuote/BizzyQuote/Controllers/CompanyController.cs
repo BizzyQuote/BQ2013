@@ -95,7 +95,7 @@ namespace BizzyQuote.Controllers
             {
                 prodParts = mm.AllProductToProductLine().ToList();
                 products = mm.AllProducts().ToList();
-                partsOfHouse = mm.ActivePartsOfHouse().ToList();
+                partsOfHouse = mm.ActiveProductLines().ToList();
             }
 
             using (var wfm = new WasteFactorManager())

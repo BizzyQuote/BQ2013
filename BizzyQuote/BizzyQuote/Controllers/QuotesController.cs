@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BizzyQuote.Data.Entities;
 using BizzyQuote.Data.Enums;
 using BizzyQuote.Data.Managers;
+using BizzyQuote.Models;
 
 namespace BizzyQuote.Controllers
 {
@@ -95,7 +96,7 @@ namespace BizzyQuote.Controllers
             {
                 quote = qm.Create(quote);
             }
-            return RedirectToAction("Edit", new { id = quote.ID});
+            return RedirectToAction("Options", new { id = quote.ID});
         }
 
         [Authorize(Roles = "Administrator,Manager,Member")]
@@ -126,8 +127,8 @@ namespace BizzyQuote.Controllers
             
                 products = mm.ActiveProducts(quote.CompanyID.GetValueOrDefault()).ToList();
 
-                var partsOfHouse = mm.ActivePartsOfHouse().ToList();
-                ViewBag.PartsOfHouse = partsOfHouse.AsEnumerable();
+                var productLines = mm.ActiveProductLines().ToList();
+                ViewBag.ProductLines = productLines.AsEnumerable();
                 ViewBag.ProductToProductLine = mm.AllProductToProductLine().ToList();
                 ViewBag.MaterialToProducts = mm.AllMaterialToProducts().ToList();
             }
@@ -136,6 +137,51 @@ namespace BizzyQuote.Controllers
             ViewBag.Products = products;
 
             
+            return View("Edit");
+        }
+
+        [Authorize(Roles = "Administrator,Manager,Member")]
+        public ActionResult Edit2(int id)
+        {
+            Quote quote;
+            List<QuoteOption> options;
+            using (var qm = new QuoteManager())
+            {
+                quote = qm.Single(id);
+                options = qm.QuoteOptions(id).ToList();
+                ViewBag.Quote = quote;
+            }
+
+
+
+            // determine the supplier and materials available
+            List<CompanyToSupplier> companySuppliers;
+            using (var sm = new SupplierManager())
+            {
+                companySuppliers = sm.ByCompanyID(quote.CompanyID.GetValueOrDefault()).ToList();
+            }
+            List<Product> products;
+            using (var mm = new MaterialsManager())
+            {
+                List<Material> allMaterials = new List<Material>();
+                foreach (var companyToSupplier in companySuppliers)
+                {
+                    allMaterials.AddRange(mm.BySupplier(companyToSupplier.SupplierID));
+                }
+                ViewBag.AvailableMaterials = allMaterials;
+
+                products = mm.ActiveProducts(quote.CompanyID.GetValueOrDefault()).ToList();
+
+                var productLines = mm.ActiveProductLines().ToList();
+                ViewBag.PartsOfHouse = productLines.AsEnumerable();
+                ViewBag.ProductToProductLine = mm.AllProductToProductLine().ToList();
+                ViewBag.MaterialToProducts = mm.AllMaterialToProducts().ToList();
+            }
+
+
+            ViewBag.Products = products;
+
+
             return View("Edit");
         }
 
@@ -198,6 +244,83 @@ namespace BizzyQuote.Controllers
                 item = qm.CreateItem(item);
             }
             return RedirectToAction("Edit", new { id = item.QuoteID });
+        }
+
+        [Authorize(Roles = "Administrator,Manager,Member")]
+        public ActionResult Options(int id)
+        {
+            List<Manufacturer> manufacturers;
+            List<ProductLine> productLines;
+
+            var model = new QuoteOptionsModel {QuoteID = id};
+
+            using (var mm = new ManufacturerManager())
+            {
+                manufacturers = mm.All().ToList();
+            }
+
+            using (var mm = new MaterialsManager())
+            {
+                productLines = mm.ActiveProductLines().ToList();
+            }
+
+            model.ManufacturerSelectionModels = manufacturers.Select(manufacturer => new ManufacturerSelectionModel
+                {
+                    IsSelected = false, 
+                    ManufacturerID = manufacturer.ID, 
+                    ManufacturerName = manufacturer.Name
+                }).ToList();
+
+            model.ProductLineSelectionModels = productLines.Select(productLine => new ProductLineSelectionModel
+            {
+                IsSelected = false,
+                ProductLineID = productLine.ID,
+                ProductLineName = productLine.Name
+            }).ToList();
+
+
+            return View("Options", model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Manager,Member")]
+        public ActionResult Options(QuoteOptionsModel model)
+        {
+            using (var qm = new QuoteManager())
+            {
+                foreach (var psm in model.ProductLineSelectionModels)
+                {
+                    if (psm.IsSelected)
+                    {
+                        // add it to the quote options database
+                        var option = new QuoteOption
+                            {
+                                QuoteID = model.QuoteID,
+                                ContentCategory = QuoteOptionCategory.ProductLineMapping,
+                                ForeignKey = psm.ProductLineID,
+                                TableName = TableName.ProductLine
+                            };
+                        option = qm.CreateOption(option);
+                    }
+                }
+
+                foreach (var msm in model.ManufacturerSelectionModels)
+                {
+                    if (msm.IsSelected)
+                    {
+                        // add it to the quote options database
+                        var option = new QuoteOption
+                            {
+                                QuoteID = model.QuoteID,
+                                ContentCategory = QuoteOptionCategory.ManufacturerDefault,
+                                ForeignKey = msm.ManufacturerID,
+                                TableName = TableName.Manufacturer
+                            };
+                        option = qm.CreateOption(option);
+                    }
+                }
+            }
+            return RedirectToAction("Edit", new { id = model.QuoteID });
         }
 
     }

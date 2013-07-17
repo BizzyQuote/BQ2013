@@ -1,0 +1,30 @@
+﻿@using BizzyQuote.Data.Entities
+@using BizzyQuote.Data.Enums
+@model BizzyQuote.Models.QuoteOptionsModel
+@{
+    ViewBag.Title = "Quote Options";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("QuoteID", Model.QuoteID)
+    <fieldset>
+        <b>Manufacturers</b>
+        <legend>Manufacturers</legend>
+        <ol>
+            @Html.EditorFor(model => model.ManufacturerSelectionModels)
+        </ol>    
+    </fieldset>
+    
+    <fieldset>
+        <b>Product Lines</b>
+        <legend>Product Lines</legend>
+        <ol>
+            @Html.EditorFor(model => model.ProductLineSelectionModels)
+        </ol>    
+    </fieldset>
+    
+    <input type="submit" value="Save" />
+}

@@ -1,0 +1,6 @@
+﻿@model BizzyQuote.Models.ProductLineSelectionModel
+
+@Html.Hidden("ProductLineID", Model.ProductLineID)
+<li class="display-label">@Model.ProductLineName</li>
+<li class="display-field">@Html.CheckBox("IsSelected", Model.IsSelected)</li>
+

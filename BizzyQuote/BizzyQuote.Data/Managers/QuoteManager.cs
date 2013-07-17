@@ -105,6 +105,18 @@ namespace BizzyQuote.Data.Managers
 
             return quoteItem;
         }
+
+        public QuoteOption CreateOption(QuoteOption option)
+        {
+            db.QuoteOptions.InsertOnSubmit(option);
+            db.SubmitChanges();
+            return option;
+        }
+
+        public IEnumerable<QuoteOption> QuoteOptions(int id)
+        {
+            return db.QuoteOptions.Where(o => o.QuoteID == id);
+        }
         #endregion
     }
 }

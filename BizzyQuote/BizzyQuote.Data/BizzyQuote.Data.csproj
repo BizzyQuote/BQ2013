@@ -56,6 +56,7 @@
     <Compile Include="Enums\TableName.cs" />
     <Compile Include="Managers\CompanyManager.cs" />
     <Compile Include="Managers\FAQManager.cs" />
+    <Compile Include="Managers\ManufacturerManager.cs" />
     <Compile Include="Managers\MaterialsManager.cs" />
     <Compile Include="Managers\PricingManager.cs" />
     <Compile Include="Managers\QuoteManager.cs" />
